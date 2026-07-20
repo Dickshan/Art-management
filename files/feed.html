@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>THE ARTZ — Explore</title>
+<meta name="description" content="Discover and collect original artwork from independent artists worldwide. Browse paintings, textiles, photography, sculpture and more on THE ARTZ." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────
+   DESIGN TOKENS
+───────────────────────────────────────── */
+:root{
+  --bg:#FAF7F2; --panel:#FFFFFF;
+  --ink:#14120F; --ink-soft:#55503F; --muted:#9A927D;
+  --line:#E7E1D4; --black:#0E0D0B;
+  --sh:rgba(20,18,15,.10); --sh-md:rgba(20,18,15,.16); --sh-strong:rgba(20,18,15,.24);
+  --danger:#B3432B; --up:#2E7D4F;
+  --violet:#5C48D9; --violet-soft:rgba(92,72,217,.08);
+  --nav-h:64px; --filter-h:52px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  background:var(--bg); color:var(--ink); min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block;max-width:100%;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+a{color:inherit;text-decoration:none;}
+::selection{background:var(--ink);color:#fff;}
+
+/* ─────────────────────────────────────────
+   TOP NAV
+───────────────────────────────────────── */
+.topnav{
+  position:sticky;top:0;z-index:50;height:var(--nav-h);
+  background:rgba(250,247,242,.88);
+  backdrop-filter:blur(14px) saturate(1.4);
+  -webkit-backdrop-filter:blur(14px) saturate(1.4);
+  border-bottom:1px solid transparent;
+  transition:border-color .2s,box-shadow .2s;
+}
+.topnav.scrolled{border-color:var(--line);box-shadow:0 2px 20px var(--sh);}
+.nav-inner{
+  max-width:1320px;margin:0 auto;height:100%;
+  display:flex;align-items:center;gap:14px;padding:0 20px;
+}
+/* Logo */
+.brand{display:flex;align-items:center;gap:9px;flex-shrink:0;cursor:pointer;}
+.brand-mark{
+  width:34px;height:34px;border-radius:10px;background:var(--black);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .2s ease,box-shadow .2s;
+}
+.brand:hover .brand-mark{transform:rotate(-4deg) scale(1.08);box-shadow:0 8px 20px var(--sh-md);}
+.brand-mark svg{width:18px;height:18px;}
+.brand-name{font-weight:800;font-size:16px;letter-spacing:-.02em;}
+.brand-name .dot{color:var(--muted);font-weight:600;}
+
+/* Search */
+.search-wrap{
+  flex:1;max-width:480px;margin:0 auto;
+  position:relative;
+}
+.search-wrap input{
+  width:100%;
+  padding:10px 18px 10px 44px;
+  border-radius:999px;border:1.5px solid var(--line);
+  background:#F4F0E8;
+  font-family:inherit;font-size:13.5px;color:var(--ink);
+  outline:none;
+  transition:border-color .18s,box-shadow .18s,background .18s;
+}
+.search-wrap input::placeholder{color:var(--muted);}
+.search-wrap input:focus{
+  border-color:var(--black);background:var(--panel);
+  box-shadow:0 0 0 4px rgba(14,13,11,.06);
+}
+.search-icon{
+  position:absolute;left:15px;top:50%;transform:translateY(-50%);
+  color:var(--muted);pointer-events:none;
+  transition:color .18s;
+  width:16px;height:16px;
+}
+.search-wrap input:focus ~ .search-icon{color:var(--ink);}
+.search-wrap input:focus + .search-icon{ color:var(--ink); }
+.search-ai-badge{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  font-size:10px;font-weight:700;letter-spacing:.04em;
+  padding:3px 8px;border-radius:999px;
+  background:var(--violet-soft);color:var(--violet);
+  pointer-events:none;
+}
+
+/* Nav right */
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.nav-icon-btn{
+  width:38px;height:38px;border-radius:50%;
+  border:1.5px solid var(--line);background:var(--panel);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  transition:box-shadow .15s,transform .15s,border-color .15s;
+}
+.nav-icon-btn:hover{box-shadow:0 6px 18px var(--sh);transform:translateY(-1px);border-color:#D9D1BC;}
+.nav-icon-btn svg{width:17px;height:17px;}
+.badge{
+  position:absolute;top:1px;right:1px;
+  width:16px;height:16px;border-radius:50%;
+  background:var(--danger);color:#fff;
+  font-size:9px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--bg);
+  animation:badgePop .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes badgePop{from{transform:scale(0);}to{transform:scale(1);}}
+
+/* Upload btn */
+.upload-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:9px 16px;border-radius:999px;
+  background:var(--black);color:#fff;
+  font-weight:700;font-size:13px;letter-spacing:.01em;
+  box-shadow:0 6px 18px rgba(14,13,11,.2);
+  transition:transform .15s,box-shadow .15s;
+}
+.upload-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(14,13,11,.3);}
+.upload-btn svg{width:14px;height:14px;}
+
+/* Avatar */
+.nav-avatar-wrap{position:relative;cursor:pointer;}
+.nav-avatar{
+  width:36px;height:36px;border-radius:50%;object-fit:cover;
+  border:2px solid var(--line);
+  transition:border-color .15s,box-shadow .15s;
+}
+.nav-avatar-wrap:hover .nav-avatar{border-color:var(--black);box-shadow:0 4px 12px var(--sh-md);}
+
+/* Profile dropdown */
+.profile-dropdown{
+  position:absolute;top:calc(100% + 10px);right:0;
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:16px;width:200px;
+  box-shadow:0 20px 50px rgba(14,13,11,.18);
+  overflow:hidden;
+  opacity:0;transform:translateY(-8px) scale(.97);pointer-events:none;
+  transition:opacity .2s,transform .2s;
+  z-index:200;
+}
+.profile-dropdown.open{opacity:1;transform:none;pointer-events:all;}
+.profile-dropdown-user{padding:14px 16px;border-bottom:1px solid var(--line);}
+.profile-dropdown-user .name{font-weight:700;font-size:13.5px;}
+.profile-dropdown-user .handle{font-size:11.5px;color:var(--muted);margin-top:2px;}
+.dropdown-item{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 16px;font-size:13px;color:var(--ink-soft);
+  transition:background .12s;
+}
+.dropdown-item:hover{background:#F4F0E8;color:var(--ink);}
+.dropdown-item svg{width:15px;height:15px;flex-shrink:0;}
+.dropdown-item.danger{color:var(--danger);}
+
+/* Notification panel */
+.notif-panel{
+  position:absolute;top:calc(100% + 10px);right:0;
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:20px;width:340px;
+  box-shadow:0 20px 50px rgba(14,13,11,.18);
+  overflow:hidden;
+  opacity:0;transform:translateY(-8px) scale(.97);pointer-events:none;
+  transition:opacity .2s,transform .2s;
+  z-index:200;
+}
+.notif-panel.open{opacity:1;transform:none;pointer-events:all;}
+.notif-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 18px 12px;border-bottom:1px solid var(--line);
+}
+.notif-header h4{font-size:14px;font-weight:700;}
+.notif-header button{font-size:11.5px;color:var(--muted);font-weight:600;}
+.notif-header button:hover{color:var(--ink);}
+.notif-list{max-height:340px;overflow-y:auto;}
+.notif-item{
+  display:flex;align-items:flex-start;gap:11px;
+  padding:12px 18px;border-bottom:1px solid #F4F0E8;
+  transition:background .12s;
+}
+.notif-item:hover{background:#FDFBF7;}
+.notif-item:last-child{border-bottom:none;}
+.notif-item.unread{background:rgba(92,72,217,.04);}
+.notif-icon{
+  width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.notif-icon svg{width:15px;height:15px;}
+.notif-icon.like{background:#FBEAE7;}
+.notif-icon.comment{background:#EAF1FB;}
+.notif-icon.follow{background:#EEF6EC;}
+.notif-icon.sale{background:#FCF3DC;}
+.notif-body{flex:1;font-size:12.5px;line-height:1.45;}
+.notif-body b{font-weight:700;}
+.notif-time{font-size:10.5px;color:var(--muted);margin-top:3px;}
+.notif-dot{width:7px;height:7px;border-radius:50%;background:var(--violet);flex-shrink:0;margin-top:5px;}
+.notif-empty{padding:28px;text-align:center;color:var(--muted);font-size:13px;}
+
+/* ─────────────────────────────────────────
+   FILTER BAR
+───────────────────────────────────────── */
+.filter-bar{
+  position:sticky;top:var(--nav-h);z-index:40;
+  background:rgba(250,247,242,.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  height:var(--filter-h);
+}
+.filter-inner{
+  max-width:1320px;margin:0 auto;height:100%;
+  display:flex;align-items:center;gap:8px;
+  padding:0 20px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.filter-inner::-webkit-scrollbar{display:none;}
+.filter-chip{
+  flex-shrink:0;
+  padding:7px 16px;border-radius:999px;
+  font-size:13px;font-weight:600;
+  border:1.5px solid var(--line);background:var(--panel);
+  color:var(--ink-soft);
+  transition:all .18s ease;
+  display:flex;align-items:center;gap:6px;
+  white-space:nowrap;
+}
+.filter-chip:hover{border-color:#C9C1AC;color:var(--ink);box-shadow:0 4px 12px var(--sh);}
+.filter-chip.active{
+  background:var(--black);color:#fff;border-color:var(--black);
+  box-shadow:0 6px 18px rgba(14,13,11,.22);
+}
+.filter-chip.foryou{border-color:transparent;background:var(--violet-soft);color:var(--violet);}
+.filter-chip.foryou.active{background:var(--violet);color:#fff;border-color:var(--violet);}
+.filter-chip svg{width:13px;height:13px;}
+
+/* ─────────────────────────────────────────
+   PAGE LAYOUT
+───────────────────────────────────────── */
+.page-layout{
+  max-width:1320px;margin:0 auto;padding:28px 20px 120px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:28px;
+}
+@media(min-width:1100px){
+  .page-layout{grid-template-columns:1fr 300px;align-items:start;}
+}
+
+/* ─────────────────────────────────────────
+   FOR YOU STRIP
+───────────────────────────────────────── */
+.fy-section{margin-bottom:28px;}
+.fy-header{
+  display:flex;align-items:center;gap:10px;margin-bottom:14px;
+}
+.fy-label{
+  display:flex;align-items:center;gap:7px;
+  font-size:13px;font-weight:700;color:var(--violet);
+  background:var(--violet-soft);padding:5px 12px;border-radius:999px;
+}
+.fy-label svg{width:14px;height:14px;}
+.fy-subtitle{font-size:12px;color:var(--muted);}
+.fy-scroll{
+  display:flex;gap:14px;overflow-x:auto;padding-bottom:4px;
+  scrollbar-width:none;
+}
+.fy-scroll::-webkit-scrollbar{display:none;}
+.fy-card{
+  flex-shrink:0;width:180px;border-radius:14px;overflow:hidden;
+  background:var(--panel);box-shadow:0 2px 10px var(--sh);
+  cursor:pointer;
+  transition:transform .22s ease,box-shadow .22s ease;
+  position:relative;
+}
+.fy-card:hover{transform:translateY(-5px) scale(1.02);box-shadow:0 16px 30px var(--sh-strong);}
+.fy-card img{width:100%;height:130px;object-fit:cover;display:block;}
+.fy-card-info{padding:10px 11px;}
+.fy-card-title{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fy-card-price{font-size:11.5px;color:var(--muted);margin-top:2px;}
+.fy-card-badge{
+  position:absolute;top:8px;left:8px;
+  background:var(--violet);color:#fff;
+  font-size:9px;font-weight:700;letter-spacing:.04em;
+  padding:3px 8px;border-radius:999px;
+}
+
+/* ─────────────────────────────────────────
+   MASONRY GRID
+───────────────────────────────────────── */
+.masonry{column-count:1;column-gap:16px;}
+@media(min-width:520px){.masonry{column-count:2;}}
+@media(min-width:780px){.masonry{column-count:3;}}
+@media(min-width:1100px){.masonry{column-count:3;}}
+
+.art-card{
+  break-inside:avoid;margin-bottom:16px;
+  border-radius:18px;overflow:hidden;
+  background:var(--panel);
+  box-shadow:0 2px 10px var(--sh);
+  cursor:pointer;position:relative;
+  transition:transform .24s cubic-bezier(.34,1.2,.64,1),box-shadow .24s ease;
+}
+.art-card:hover{
+  transform:translateY(-6px) scale(1.012);
+  box-shadow:0 20px 40px var(--sh-strong);
+}
+.art-card img{width:100%;display:block;}
+.art-card .price-tag{
+  position:absolute;top:11px;left:11px;
+  background:var(--black);color:#fff;
+  font-weight:700;font-size:11.5px;
+  padding:5px 11px;border-radius:999px;
+  transform:rotate(-2.5deg);
+  box-shadow:0 6px 14px rgba(0,0,0,.25);
+  pointer-events:none;
+}
+.art-card .sold-tag{
+  position:absolute;top:11px;left:11px;
+  background:rgba(179,67,43,.9);color:#fff;
+  font-weight:700;font-size:10.5px;
+  padding:4px 10px;border-radius:999px;
+  pointer-events:none;
+}
+.art-card .overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(0,0,0,.65) 100%);
+  opacity:0;transition:opacity .22s ease;
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:10px;
+}
+.art-card:hover .overlay{opacity:1;}
+.overlay-top{display:flex;justify-content:flex-end;gap:7px;}
+.ov-btn{
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(255,255,255,.92);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 12px rgba(0,0,0,.2);
+  transition:transform .15s,background .15s;
+}
+.ov-btn:hover{transform:scale(1.12);}
+.ov-btn.liked{background:#fff0ee;}
+.ov-btn svg{width:15px;height:15px;}
+.ov-btn.liked svg path{fill:#E0483A;stroke:#E0483A;}
+.overlay-bottom{color:#fff;}
+.overlay-bottom .art-title{font-weight:700;font-size:13.5px;line-height:1.3;}
+.overlay-bottom .art-artist{
+  display:flex;align-items:center;gap:6px;
+  margin-top:5px;font-size:12px;opacity:.85;
+}
+.overlay-bottom .art-artist img{
+  width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(255,255,255,.5);
+  object-fit:cover;
+}
+
+/* ─────────────────────────────────────────
+   EMPTY / LOADER
+───────────────────────────────────────── */
+.skeleton{
+  break-inside:avoid;margin-bottom:16px;
+  border-radius:18px;overflow:hidden;
+  background:linear-gradient(90deg,#EDE7D8 0%,#F5F0E6 50%,#EDE7D8 100%);
+  background-size:200% 100%;
+  animation:shimmer 1.6s infinite;
+}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.spinner{
+  display:flex;justify-content:center;padding:32px 0;
+}
+.spinner-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--muted);
+  animation:bounce .8s infinite ease-in-out;
+  margin:0 4px;
+}
+.spinner-dot:nth-child(2){animation-delay:.15s;}
+.spinner-dot:nth-child(3){animation-delay:.3s;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.empty-state{
+  grid-column:1/-1;text-align:center;padding:60px 20px;
+  color:var(--muted);
+}
+.empty-state p{font-size:14px;margin-top:8px;}
+
+/* ─────────────────────────────────────────
+   SIDEBAR
+───────────────────────────────────────── */
+.sidebar{display:none;}
+@media(min-width:1100px){.sidebar{display:block;}}
+.sidebar-card{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:18px;padding:20px;margin-bottom:16px;
+  overflow:hidden;
+}
+.sidebar-card h4{font-size:14px;font-weight:700;margin-bottom:14px;}
+.artist-row{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 0;border-bottom:1px solid #F4F0E8;
+}
+.artist-row:last-child{border-bottom:none;}
+.artist-row img{width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.artist-info{flex:1;min-width:0;}
+.artist-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.artist-handle{font-size:11px;color:var(--muted);}
+.follow-btn{
+  font-size:11.5px;font-weight:700;
+  padding:5px 12px;border-radius:999px;
+  border:1.5px solid var(--line);color:var(--ink-soft);
+  transition:all .15s;flex-shrink:0;
+}
+.follow-btn:hover{border-color:var(--black);color:var(--ink);}
+.follow-btn.following{background:var(--black);color:#fff;border-color:var(--black);}
+.tag-cloud{display:flex;flex-wrap:wrap;gap:7px;}
+.tag-pill{
+  padding:5px 12px;border-radius:999px;
+  font-size:12px;font-weight:600;color:var(--ink-soft);
+  background:#F4F0E8;border:1px solid transparent;
+  cursor:pointer;
+  transition:all .15s;
+}
+.tag-pill:hover{background:var(--black);color:#fff;}
+.sidebar-see-all{
+  display:block;text-align:center;
+  font-size:12px;font-weight:600;color:var(--muted);
+  margin-top:14px;
+}
+.sidebar-see-all:hover{color:var(--ink);}
+.collection-mini{
+  display:flex;align-items:center;gap:10px;padding:7px 0;
+  border-bottom:1px solid #F4F0E8;cursor:pointer;
+}
+.collection-mini:last-child{border-bottom:none;}
+.collection-mini:hover .collection-mini-name{color:var(--black);}
+.collection-thumb{
+  width:44px;height:44px;border-radius:10px;overflow:hidden;flex-shrink:0;
+}
+.collection-thumb img{width:100%;height:100%;object-fit:cover;}
+.collection-mini-name{font-size:13px;font-weight:700;transition:color .15s;}
+.collection-mini-count{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* ─────────────────────────────────────────
+   ARTWORK DETAIL MODAL
+───────────────────────────────────────── */
+.modal-backdrop{
+  position:fixed;inset:0;
+  background:rgba(14,13,11,.55);
+  backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;
+  z-index:300;padding:20px;
+  opacity:0;pointer-events:none;
+  transition:opacity .25s;
+}
+.modal-backdrop.open{opacity:1;pointer-events:all;}
+.modal-box{
+  background:var(--panel);border-radius:24px;
+  width:100%;max-width:960px;max-height:92vh;
+  overflow:hidden;
+  display:grid;grid-template-columns:1fr;
+  box-shadow:0 40px 80px rgba(0,0,0,.35);
+  transform:scale(.96) translateY(20px);
+  transition:transform .28s cubic-bezier(.34,1.2,.64,1);
+}
+.modal-backdrop.open .modal-box{transform:none;}
+@media(min-width:680px){
+  .modal-box{grid-template-columns:1fr 1fr;max-height:88vh;}
+}
+.modal-img-col{
+  position:relative;overflow:hidden;
+  min-height:300px;max-height:88vh;
+}
+.modal-img-col img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .6s ease;
+}
+.modal-img-col:hover img{transform:scale(1.04);}
+.modal-img-gradient{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,0) 60%,rgba(0,0,0,.5) 100%);
+  pointer-events:none;
+}
+.modal-close{
+  position:absolute;top:14px;right:14px;
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,.92);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.2);
+  transition:transform .15s;z-index:2;
+}
+.modal-close:hover{transform:scale(1.1);}
+.modal-close svg{width:15px;height:15px;}
+.modal-like-fab{
+  position:absolute;bottom:16px;right:16px;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--panel);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 24px rgba(0,0,0,.25);
+  transition:transform .18s,background .18s;
+  z-index:2;
+}
+.modal-like-fab:hover{transform:scale(1.12);}
+.modal-like-fab.liked{background:#fff0ee;}
+.modal-like-fab svg{width:20px;height:20px;}
+.modal-like-fab.liked svg path{fill:#E0483A;stroke:#E0483A;}
+
+/* Modal detail */
+.modal-detail{overflow-y:auto;max-height:88vh;}
+.modal-detail-inner{padding:28px;}
+.modal-artist-row{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.modal-artist-row img{width:40px;height:40px;border-radius:50%;object-fit:cover;}
+.modal-artist-name{font-weight:700;font-size:14px;}
+.modal-artist-handle{font-size:12px;color:var(--muted);margin-top:1px;}
+.modal-follow-btn{
+  margin-left:auto;
+  font-size:12px;font-weight:700;
+  padding:6px 14px;border-radius:999px;
+  border:1.5px solid var(--line);color:var(--ink-soft);
+  transition:all .15s;
+}
+.modal-follow-btn:hover{border-color:var(--black);color:var(--ink);}
+.modal-follow-btn.following{background:var(--black);color:#fff;border-color:var(--black);}
+.modal-title{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px;}
+.modal-meta-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.modal-category{
+  font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  padding:4px 10px;border-radius:999px;
+  background:#F4F0E8;color:var(--ink-soft);
+}
+.modal-like-count{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px;}
+.modal-like-count svg{width:13px;height:13px;}
+.modal-price{
+  font-size:26px;font-weight:800;letter-spacing:-.02em;
+  margin-bottom:14px;
+}
+.modal-price .currency{font-size:16px;color:var(--muted);font-weight:600;margin-right:2px;}
+.modal-price.sold-price{color:var(--muted);text-decoration:line-through;font-size:18px;}
+.modal-desc{font-size:13.5px;color:var(--ink-soft);line-height:1.65;margin-bottom:16px;}
+.modal-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
+.modal-tag{
+  font-size:11.5px;font-weight:600;
+  padding:4px 10px;border-radius:999px;
+  background:var(--violet-soft);color:var(--violet);
+}
+/* Buy actions */
+.modal-actions{display:flex;gap:10px;margin-bottom:22px;}
+.btn-primary{
+  flex:1;padding:13px 20px;border-radius:999px;
+  background:var(--black);color:#fff;
+  font-weight:700;font-size:14px;
+  box-shadow:0 8px 22px rgba(14,13,11,.22);
+  transition:transform .15s,box-shadow .15s;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(14,13,11,.32);}
+.btn-primary svg{width:15px;height:15px;}
+.btn-ghost{
+  padding:13px 20px;border-radius:999px;
+  border:1.5px solid var(--line);color:var(--ink);
+  font-weight:700;font-size:14px;
+  transition:all .15s;
+}
+.btn-ghost:hover{border-color:var(--black);box-shadow:0 6px 16px var(--sh);}
+/* Comments */
+.modal-comments-label{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--ink-soft);}
+.comment-input-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.comment-input-row input{
+  flex:1;padding:10px 16px;border-radius:999px;
+  border:1.5px solid var(--line);background:#FDFBF7;
+  font-family:inherit;font-size:13px;outline:none;
+  transition:border-color .15s;
+}
+.comment-input-row input:focus{border-color:var(--black);}
+.comment-send{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--black);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:transform .15s;
+}
+.comment-send:hover{transform:scale(1.1);}
+.comment-send svg{width:15px;height:15px;}
+.comment-list{display:flex;flex-direction:column;gap:10px;}
+.comment-item{display:flex;gap:9px;}
+.comment-item img{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.comment-bubble{background:#F4F0E8;border-radius:0 12px 12px 12px;padding:8px 12px;}
+.comment-author{font-size:11.5px;font-weight:700;margin-bottom:3px;}
+.comment-text{font-size:13px;color:var(--ink-soft);}
+.comment-placeholder{font-size:13px;color:var(--muted);text-align:center;padding:12px 0;}
+
+/* Related */
+.modal-related-label{font-size:13px;font-weight:700;margin:22px 0 12px;color:var(--ink-soft);}
+.related-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;}
+.related-scroll::-webkit-scrollbar{display:none;}
+.related-card{
+  flex-shrink:0;width:110px;border-radius:12px;overflow:hidden;
+  cursor:pointer;background:var(--panel);
+  transition:transform .2s,box-shadow .2s;
+}
+.related-card:hover{transform:translateY(-3px);box-shadow:0 10px 22px var(--sh-strong);}
+.related-card img{width:100%;height:80px;object-fit:cover;}
+.related-card .related-title{font-size:11px;font-weight:600;padding:6px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* ─────────────────────────────────────────
+   TOAST
+───────────────────────────────────────── */
+.toast{
+  position:fixed;bottom:90px;left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--black);color:#fff;
+  padding:12px 22px;border-radius:999px;
+  font-size:13px;font-weight:600;
+  opacity:0;pointer-events:none;
+  transition:.25s ease;z-index:400;
+  box-shadow:0 14px 30px rgba(0,0,0,.3);
+  white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+@media(min-width:768px){.toast{bottom:30px;}}
+
+/* ─────────────────────────────────────────
+   MOBILE BOTTOM TAB BAR
+───────────────────────────────────────── */
+.bottom-tabs{
+  position:fixed;bottom:0;left:0;right:0;z-index:50;
+  background:rgba(250,247,242,.92);
+  backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);
+  display:flex;
+}
+@media(min-width:768px){.bottom-tabs{display:none;}}
+.tab-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:10px 0 12px;gap:3px;
+  color:var(--muted);font-size:10.5px;font-weight:600;
+  transition:color .15s;
+  position:relative;
+}
+.tab-item.active{color:var(--ink);}
+.tab-item svg{width:22px;height:22px;}
+.tab-item .tab-badge{
+  position:absolute;top:8px;right:20%;
+  width:14px;height:14px;border-radius:50%;
+  background:var(--danger);color:#fff;font-size:8px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--bg);
+}
+.tab-upload{
+  width:46px;height:46px;border-radius:50%;
+  background:var(--black);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 20px rgba(14,13,11,.3);
+  color:#fff;margin-bottom:2px;
+  transition:transform .15s;
+}
+.tab-item:active .tab-upload{transform:scale(.95);}
+
+/* ─────────────────────────────────────────
+   UPLOAD MODAL (minimal — redirects to profile)
+───────────────────────────────────────── */
+.upload-modal-backdrop{
+  position:fixed;inset:0;background:rgba(14,13,11,.5);backdrop-filter:blur(4px);
+  display:flex;align-items:flex-end;justify-content:center;
+  z-index:350;padding:0;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+@media(min-width:600px){
+  .upload-modal-backdrop{align-items:center;padding:20px;}
+}
+.upload-modal-backdrop.open{opacity:1;pointer-events:all;}
+.upload-modal-box{
+  background:var(--panel);
+  border-radius:24px 24px 0 0;
+  width:100%;max-width:440px;padding:28px 24px 36px;
+  transform:translateY(100%);
+  transition:transform .32s cubic-bezier(.34,1.2,.64,1);
+}
+@media(min-width:600px){
+  .upload-modal-box{border-radius:24px;transform:scale(.94);}
+}
+.upload-modal-backdrop.open .upload-modal-box{transform:none;}
+.upload-modal-icon{
+  width:52px;height:52px;border-radius:16px;background:var(--black);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 16px;
+}
+.upload-modal-icon svg{width:26px;height:26px;}
+
+/* Scrollbar styling for modal */
+.modal-detail::-webkit-scrollbar{width:4px;}
+.modal-detail::-webkit-scrollbar-track{background:transparent;}
+.modal-detail::-webkit-scrollbar-thumb{background:#DDD7C8;border-radius:4px;}
+
+/* Auth overlay */
+.auth-required{
+  position:fixed;inset:0;background:rgba(250,247,242,.92);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;z-index:500;
+  flex-direction:column;gap:14px;text-align:center;padding:20px;
+}
+.auth-required h2{font-size:22px;font-weight:800;letter-spacing:-.01em;}
+.auth-required p{font-size:14px;color:var(--ink-soft);max-width:320px;}
+.auth-required .auth-btns{display:flex;gap:10px;margin-top:6px;}
+</style>
+</head>
+<body>
+
+<!-- ============ TOP NAV ============ -->
+<nav class="topnav" id="topnav">
+  <div class="nav-inner">
+    <!-- Logo -->
+    <div class="brand" onclick="window.location.href='feed.html'">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 2c-1 3-3.5 4.5-7 5 2.7 1.3 4 3 4.5 6C10 10 12.3 8 15.5 7.3 12.8 6.2 12.6 4.5 12 2z" fill="#FAF7F2"/>
+          <circle cx="17" cy="16" r="2.4" fill="#FAF7F2"/>
+        </svg>
+      </div>
+      <div class="brand-name">THE ARTZ<span class="dot">.</span></div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-wrap" id="searchWrap">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>
+      </svg>
+      <input type="text" id="searchInput" placeholder="Search artz, artists, styles, tags…" autocomplete="off">
+      <span class="search-ai-badge">AI</span>
+    </div>
+
+    <!-- Right icons -->
+    <div class="nav-right">
+      <button class="upload-btn" id="uploadBtnNav" onclick="openUploadModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        Add artz
+      </button>
+
+      <!-- Notifications -->
+      <div style="position:relative;">
+        <button class="nav-icon-btn" id="notifBtn" onclick="toggleNotifPanel()" title="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.7 21a2 2 0 01-3.4 0"/>
+          </svg>
+          <span class="badge" id="notifBadge" style="display:none;">3</span>
+        </button>
+        <div class="notif-panel" id="notifPanel">
+          <div class="notif-header">
+            <h4>Notifications</h4>
+            <button onclick="markAllRead()">Mark all read</button>
+          </div>
+          <div class="notif-list" id="notifList">
+            <div class="notif-empty">Loading…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile avatar -->
+      <div class="nav-avatar-wrap" id="avatarWrap" onclick="toggleProfileDropdown()">
+        <img class="nav-avatar" id="navAvatar" src="https://picsum.photos/seed/avatar/100/100" alt="You">
+        <div class="profile-dropdown" id="profileDropdown">
+          <div class="profile-dropdown-user">
+            <div class="name" id="dropdownName">—</div>
+            <div class="handle" id="dropdownHandle">@—</div>
+          </div>
+          <a class="dropdown-item" href="profile.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0116 0"/></svg>
+            Profile
+          </a>
+          <div class="dropdown-item" onclick="window.location.href='profile.html#settings'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            Settings
+          </div>
+          <div class="dropdown-item danger" onclick="logout()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+            Sign out
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ FILTER / CATEGORY BAR ============ -->
+<div class="filter-bar">
+  <div class="filter-inner" id="filterBar">
+    <button class="filter-chip foryou active" data-cat="ForYou" onclick="setCategory('ForYou', this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.9-10-9.6C.4 7.8 2.3 4 6 4c2.1 0 3.6 1.1 4.8 2.7C12 5.1 13.5 4 15.6 4c3.7 0 5.6 3.8 4 7.4C19.5 16.1 12 21 12 21z"/></svg>
+      For You
+    </button>
+    <button class="filter-chip" data-cat="All" onclick="setCategory('All', this)">All</button>
+    <button class="filter-chip" data-cat="Painting" onclick="setCategory('Painting', this)">Painting</button>
+    <button class="filter-chip" data-cat="Textile" onclick="setCategory('Textile', this)">Textile</button>
+    <button class="filter-chip" data-cat="Photography" onclick="setCategory('Photography', this)">Photography</button>
+    <button class="filter-chip" data-cat="Illustration" onclick="setCategory('Illustration', this)">Illustration</button>
+    <button class="filter-chip" data-cat="Sculpture" onclick="setCategory('Sculpture', this)">Sculpture</button>
+    <button class="filter-chip" data-cat="Digital" onclick="setCategory('Digital', this)">Digital</button>
+    <button class="filter-chip" data-cat="Trending" onclick="setCategory('Trending', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      Trending
+    </button>
+  </div>
+</div>
+
+<!-- ============ MAIN PAGE ============ -->
+<div class="page-layout" id="pageLayout">
+
+  <!-- FEED COLUMN -->
+  <div class="feed-col">
+    <!-- For You / Recommendations Strip -->
+    <div class="fy-section" id="fySection">
+      <div class="fy-header">
+        <div class="fy-label">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          AI Picks for You
+        </div>
+        <span class="fy-subtitle">Based on your taste &amp; activity</span>
+      </div>
+      <div class="fy-scroll" id="fyScroll">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <!-- Masonry grid -->
+    <div class="masonry" id="artGrid">
+      <!-- skeletons injected immediately -->
+    </div>
+
+    <!-- Load more trigger -->
+    <div class="spinner" id="loadSpinner" style="display:none;">
+      <div class="spinner-dot"></div>
+      <div class="spinner-dot"></div>
+      <div class="spinner-dot"></div>
+    </div>
+    <div id="infiniteAnchor" style="height:1px;"></div>
+  </div>
+
+  <!-- SIDEBAR (desktop only) -->
+  <aside class="sidebar" id="sidebar">
+    <!-- Trending Artists -->
+    <div class="sidebar-card">
+      <h4>Trending Artists</h4>
+      <div id="trendingArtists">
+        <div class="artist-row"><div style="width:36px;height:36px;border-radius:50%;background:#EDE7D8;"></div><div style="flex:1;height:28px;border-radius:6px;background:#EDE7D8;margin-left:10px;"></div></div>
+      </div>
+      <a href="#" class="sidebar-see-all" onclick="return false;">See all artists →</a>
+    </div>
+
+    <!-- Trending Tags -->
+    <div class="sidebar-card">
+      <h4>Trending Tags</h4>
+      <div class="tag-cloud" id="trendingTags"></div>
+    </div>
+
+    <!-- Quick Collections -->
+    <div class="sidebar-card" id="collectionsCard" style="display:none;">
+      <h4>Your Collections</h4>
+      <div id="quickCollections"></div>
+      <a href="profile.html#favorites" class="sidebar-see-all">Manage collections →</a>
+    </div>
+  </aside>
+
+</div>
+
+<!-- ============ ARTWORK DETAIL MODAL ============ -->
+<div class="modal-backdrop" id="artworkModal" onclick="handleModalBackdropClick(event)">
+  <div class="modal-box" id="modalBox">
+    <!-- Image col -->
+    <div class="modal-img-col" id="modalImgCol">
+      <img id="modalImg" src="" alt="">
+      <div class="modal-img-gradient"></div>
+      <button class="modal-close" onclick="closeModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <button class="modal-like-fab" id="modalLikeFab" onclick="modalToggleLike()">
+        <svg id="modalLikeIcon" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2">
+          <path d="M12 21s-7.5-4.9-10-9.6C.4 7.8 2.3 4 6 4c2.1 0 3.6 1.1 4.8 2.7C12 5.1 13.5 4 15.6 4c3.7 0 5.6 3.8 4 7.4C19.5 16.1 12 21 12 21z"/>
+        </svg>
+      </button>
+    </div>
+    <!-- Detail col -->
+    <div class="modal-detail" id="modalDetail">
+      <div class="modal-detail-inner">
+        <!-- Artist -->
+        <div class="modal-artist-row">
+          <img id="modalArtistAvatar" src="" alt="">
+          <div>
+            <div class="modal-artist-name" id="modalArtistName">—</div>
+            <div class="modal-artist-handle" id="modalArtistHandle">@—</div>
+          </div>
+          <button class="modal-follow-btn" id="modalFollowBtn" onclick="toggleFollowInModal()">Follow</button>
+        </div>
+        <!-- Title & meta -->
+        <div class="modal-title" id="modalTitle">—</div>
+        <div class="modal-meta-row">
+          <span class="modal-category" id="modalCategory">—</span>
+          <span class="modal-like-count">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.9-10-9.6C.4 7.8 2.3 4 6 4c2.1 0 3.6 1.1 4.8 2.7C12 5.1 13.5 4 15.6 4c3.7 0 5.6 3.8 4 7.4C19.5 16.1 12 21 12 21z"/></svg>
+            <span id="modalLikeCount">0</span>
+          </span>
+        </div>
+        <!-- Price -->
+        <div class="modal-price" id="modalPrice">
+          <span class="currency">$</span><span id="modalPriceVal">—</span>
+        </div>
+        <!-- Description -->
+        <div class="modal-desc" id="modalDesc">—</div>
+        <!-- Tags -->
+        <div class="modal-tags" id="modalTags"></div>
+        <!-- Actions -->
+        <div class="modal-actions" id="modalActions">
+          <button class="btn-primary" id="modalBuyBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V22H4V12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+            Buy / Enquire
+          </button>
+          <button class="btn-ghost" onclick="shareArtwork()">Share</button>
+        </div>
+        <!-- Comments -->
+        <div class="modal-comments-label" id="commentsLabel">Comments</div>
+        <div class="comment-input-row" id="commentInputRow">
+          <img id="commentMeAvatar" src="https://picsum.photos/seed/avatar/60/60" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+          <input type="text" id="commentInput" placeholder="Add a comment…" onkeydown="if(event.key==='Enter')postComment()">
+          <button class="comment-send" onclick="postComment()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+        <div class="comment-list" id="commentList">
+          <div class="comment-placeholder">Be the first to comment ✦</div>
+        </div>
+        <!-- Related -->
+        <div class="modal-related-label">Related Artz</div>
+        <div class="related-scroll" id="relatedScroll">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ UPLOAD PROMPT MODAL ============ -->
+<div class="upload-modal-backdrop" id="uploadModal" onclick="if(event.target===this)closeUploadModal()">
+  <div class="upload-modal-box">
+    <div class="upload-modal-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    </div>
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:19px;font-weight:800;letter-spacing:-.01em;margin-bottom:6px;">Share your artz</div>
+      <div style="font-size:13.5px;color:var(--ink-soft);line-height:1.55;">Upload an image, set your price and let collectors find your work. Our AI will generate tags and a description automatically.</div>
+    </div>
+    <button class="btn-primary" onclick="window.location.href='profile.html#showcase'" style="margin-bottom:10px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+      Go to my showcase
+    </button>
+    <button class="btn-ghost" style="width:100%;justify-content:center;display:flex;" onclick="closeUploadModal()">Maybe later</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Bottom tab bar (mobile) -->
+<nav class="bottom-tabs">
+  <div class="tab-item active" onclick="window.location.href='feed.html'">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+    Explore
+  </div>
+  <div class="tab-item" onclick="focusSearch()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    Search
+  </div>
+  <div class="tab-item" onclick="openUploadModal()">
+    <div class="tab-upload">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+    </div>
+  </div>
+  <div class="tab-item" onclick="toggleNotifPanel()" style="position:relative;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+    <span class="tab-badge" id="tabBadge">3</span>
+    Alerts
+  </div>
+  <div class="tab-item" onclick="window.location.href='profile.html'">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0116 0"/></svg>
+    Profile
+  </div>
+</nav>
+
+<script>
+/* ─────────────────────────────────────────
+   CONFIG & GRAPHQL HELPER
+───────────────────────────────────────── */
+const API      = 'http://localhost:4000/graphql';
+const TOKEN_KEY = 'theartz_token';
+const USER_KEY  = 'theartz_user';
+
+let currentUser = null;
+try { currentUser = JSON.parse(localStorage.getItem(USER_KEY)); } catch(e) {}
+
+async function gql(query, variables = {}) {
+  const tok = localStorage.getItem(TOKEN_KEY);
+  const res = await fetch(API, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(tok ? { Authorization: `Bearer ${tok}` } : {}),
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+  if (!res.ok) throw new Error(`Network error: ${res.status}`);
+  const json = await res.json();
+  if (json.errors?.length) throw new Error(json.errors[0].message);
+  return json.data;
+}
+
+/* ─────────────────────────────────────────
+   STATE
+───────────────────────────────────────── */
+let allArtworks    = [];   // full API response
+let displayedArtz  = [];   // filtered/searched view
+let selectedCat    = 'ForYou';
+let currentModalArtwork = null;
+let likedIds       = new Set();
+let followingUsers = new Set();
+let searchTimer    = null;
+let isLoading      = false;
+
+const PLACEHOLDER_AVATAR = 'https://picsum.photos/seed/artist/60/60';
+
+/* ─────────────────────────────────────────
+   INIT
+───────────────────────────────────────── */
+async function init() {
+  setupNav();
+  setupSearch();
+  setupScrollShadow();
+  showSkeletons(6);
+  try {
+    await loadFeed();
+    loadSidebar();
+    if (currentUser) loadNotifications();
+    if (currentUser) loadCollectionsSidebar();
+  } catch(err) {
+    console.warn('[feed] API not reachable, using demo data.', err.message);
+    useDemoData();
+  }
+  setupInfiniteScroll();
+}
+
+/* ─────────────────────────────────────────
+   NAV SETUP
+───────────────────────────────────────── */
+function setupNav() {
+  if (currentUser) {
+    document.getElementById('navAvatar').src =
+      currentUser.avatarUrl || `https://picsum.photos/seed/${currentUser.username}/100/100`;
+    document.getElementById('dropdownName').textContent = currentUser.displayName || currentUser.username;
+    document.getElementById('dropdownHandle').textContent = '@' + currentUser.username;
+    document.getElementById('commentMeAvatar').src =
+      currentUser.avatarUrl || `https://picsum.photos/seed/${currentUser.username}/60/60`;
+  }
+  // Close dropdowns on outside click
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#avatarWrap')) closeProfileDropdown();
+    if (!e.target.closest('#notifBtn') && !e.target.closest('#notifPanel')) closeNotifPanel();
+  });
+}
+
+function toggleProfileDropdown() {
+  const dd = document.getElementById('profileDropdown');
+  dd.classList.toggle('open');
+  closeNotifPanel();
+}
+function closeProfileDropdown() { document.getElementById('profileDropdown').classList.remove('open'); }
+
+function toggleNotifPanel() {
+  const p = document.getElementById('notifPanel');
+  p.classList.toggle('open');
+  closeProfileDropdown();
+}
+function closeNotifPanel() { document.getElementById('notifPanel').classList.remove('open'); }
+
+function logout() {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(USER_KEY);
+  window.location.href = 'login.html';
+}
+
+/* ─────────────────────────────────────────
+   SCROLL SHADOW
+───────────────────────────────────────── */
+function setupScrollShadow() {
+  window.addEventListener('scroll', () => {
+    document.getElementById('topnav').classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+}
+
+/* ─────────────────────────────────────────
+   SEARCH
+───────────────────────────────────────── */
+function setupSearch() {
+  const input = document.getElementById('searchInput');
+  input.addEventListener('input', (e) => {
+    clearTimeout(searchTimer);
+    const q = e.target.value.trim();
+    searchTimer = setTimeout(() => {
+      if (q.length >= 2) performSearch(q);
+      else if (q.length === 0) loadFeed();
+    }, 380);
+  });
+}
+
+async function performSearch(query) {
+  showSkeletons(4);
+  try {
+    const data = await gql(`
+      query Search($q: String!) {
+        searchArtz(query: $q) {
+          id title description price currency category imageUrl status likeCount likedByMe
+          aiTags aiGeneratedDescription createdAt
+          owner { id username displayName avatarUrl }
+        }
+      }
+    `, { q: query });
+    allArtworks   = data.searchArtz || [];
+    displayedArtz = allArtworks;
+    renderGrid();
+    hideFySection();
+  } catch(err) {
+    showToast('Search unavailable — check if the backend is running');
+  }
+}
+
+function focusSearch() {
+  const inp = document.getElementById('searchInput');
+  inp.scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => inp.focus(), 300);
+}
+
+/* ─────────────────────────────────────────
+   LOAD FEED (all available artworks via searchArtz with wildcard)
+───────────────────────────────────────── */
+async function loadFeed() {
+  isLoading = true;
+  showSkeletons(8);
+  const data = await gql(`
+    query Feed {
+      searchArtz(query: "") {
+        id title description price currency category imageUrl status likeCount likedByMe
+        aiTags aiGeneratedDescription createdAt
+        owner { id username displayName avatarUrl }
+      }
+    }
+  `);
+  allArtworks = data.searchArtz || [];
+
+  // Track liked IDs
+  likedIds = new Set(allArtworks.filter(a => a.likedByMe).map(a => a.id));
+
+  displayedArtz = allArtworks;
+  isLoading = false;
+  applyFilter(selectedCat);
+
+  // Load "For You" recommendations from the first artwork
+  if (allArtworks.length > 0) loadRecommendations(allArtworks[0].id);
+}
+
+/* ─────────────────────────────────────────
+   CATEGORY FILTER
+───────────────────────────────────────── */
+function setCategory(cat, btn) {
+  selectedCat = cat;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter(cat);
+  if (cat === 'ForYou') showFySection();
+  else hideFySection();
+}
+
+function applyFilter(cat) {
+  if (cat === 'ForYou' || cat === 'All') {
+    displayedArtz = [...allArtworks];
+  } else if (cat === 'Trending') {
+    // Sort by likeCount desc as proxy for trending
+    displayedArtz = [...allArtworks].sort((a, b) => b.likeCount - a.likeCount);
+  } else {
+    displayedArtz = allArtworks.filter(a => a.category === cat);
+  }
+  renderGrid();
+}
+
+function hideFySection() { document.getElementById('fySection').style.display = 'none'; }
+function showFySection()  { document.getElementById('fySection').style.display = ''; }
+
+/* ─────────────────────────────────────────
+   RENDER GRID
+───────────────────────────────────────── */
+function showSkeletons(n) {
+  const grid = document.getElementById('artGrid');
+  const heights = [260, 320, 200, 370, 290, 240, 310, 280];
+  grid.innerHTML = Array.from({length: n}, (_, i) =>
+    `<div class="skeleton" style="height:${heights[i % heights.length]}px;"></div>`
+  ).join('');
+}
+
+function renderGrid() {
+  const grid = document.getElementById('artGrid');
+  if (!displayedArtz.length) {
+    grid.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#9A927D" stroke-width="1.5" width="40" height="40" style="margin:0 auto 12px"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <p>No artz found. Try a different search or category.</p>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = displayedArtz.map(a => renderCard(a)).join('');
+}
+
+function renderCard(a) {
+  const isLiked = likedIds.has(a.id);
+  const isSold  = a.status === 'sold';
+  const owner   = a.owner || {};
+  const avatar  = owner.avatarUrl || `https://picsum.photos/seed/${owner.username || 'art'}/60/60`;
+
+  return `<div class="art-card" onclick="openModal('${a.id}')">
+    ${isSold
+      ? `<span class="sold-tag">Sold</span>`
+      : `<span class="price-tag">$${Number(a.price).toFixed(0)}</span>`}
+    <img src="${a.imageUrl}" alt="${escHtml(a.title)}" loading="lazy">
+    <div class="overlay">
+      <div class="overlay-top">
+        <button class="ov-btn ${isLiked ? 'liked' : ''}"
+          onclick="event.stopPropagation();toggleLike('${a.id}', this)"
+          title="${isLiked ? 'Unlike' : 'Like'}">
+          <svg viewBox="0 0 24 24"
+            fill="${isLiked ? '#E0483A' : 'none'}"
+            stroke="${isLiked ? '#E0483A' : '#333'}"
+            stroke-width="2">
+            <path d="M12 21s-7.5-4.9-10-9.6C.4 7.8 2.3 4 6 4c2.1 0 3.6 1.1 4.8 2.7C12 5.1 13.5 4 15.6 4c3.7 0 5.6 3.8 4 7.4C19.5 16.1 12 21 12 21z"/>
+          </svg>
+        </button>
+        <button class="ov-btn" onclick="event.stopPropagation();saveToCollection('${a.id}')" title="Save">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+        </button>
+      </div>
+      <div class="overlay-bottom">
+        <div class="art-title">${escHtml(a.title)}</div>
+        <div class="art-artist">
+          <img src="${avatar}" alt="${escHtml(owner.displayName || '')}">
+          ${escHtml(owner.displayName || owner.username || 'Artist')}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ─────────────────────────────────────────
+   LIKE / UNLIKE
+───────────────────────────────────────── */
+async function toggleLike(artworkId, btn) {
+  if (!currentUser) {
+    showToast('Sign in to like artz ✦');
+    return;
+  }
+  const wasLiked = likedIds.has(artworkId);
+  // Optimistic update
+  if (wasLiked) { likedIds.delete(artworkId); btn.classList.remove('liked'); }
+  else           { likedIds.add(artworkId);    btn.classList.add('liked'); }
+  const svg = btn.querySelector('svg');
+  svg.setAttribute('fill',   wasLiked ? 'none'     : '#E0483A');
+  svg.setAttribute('stroke', wasLiked ? '#333'     : '#E0483A');
+
+  // Heart pulse animation
+  btn.style.transform = 'scale(1.35)';
+  setTimeout(() => { btn.style.transform = ''; }, 180);
+
+  try {
+    const data = await gql(`
+      mutation Like($id: ID!) { toggleLike(artworkId: $id) { id likeCount likedByMe } }
+    `, { id: artworkId });
+    const updated = data.toggleLike;
+    // Sync with server response
+    const idx = allArtworks.findIndex(a => a.id === artworkId);
+    if (idx !== -1) { allArtworks[idx].likeCount = updated.likeCount; allArtworks[idx].likedByMe = updated.likedByMe; }
+    if (!updated.likedByMe) likedIds.delete(artworkId); else likedIds.add(artworkId);
+    // Update modal if open on same artwork
+    if (currentModalArtwork?.id === artworkId) {
+      document.getElementById('modalLikeCount').textContent = updated.likeCount;
+      syncModalLikeBtn(updated.likedByMe);
+    }
+  } catch(err) {
+    // Revert on failure
+    if (wasLiked) { likedIds.add(artworkId); btn.classList.add('liked'); }
+    else           { likedIds.delete(artworkId); btn.classList.remove('liked'); }
+    showToast('Like failed — is the backend running?');
+  }
+}
+
+/* ─────────────────────────────────────────
+   ARTWORK DETAIL MODAL
+───────────────────────────────────────── */
+async function openModal(artworkId) {
+  const artwork = allArtworks.find(a => a.id === artworkId) || displayedArtz.find(a => a.id === artworkId);
+  if (!artwork) return;
+  populateModal(artwork);
+  document.getElementById('artworkModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // Load related async
+  loadRelated(artworkId);
+}
+
+function populateModal(a) {
+  currentModalArtwork = a;
+  const owner = a.owner || {};
+  const avatar = owner.avatarUrl || `https://picsum.photos/seed/${owner.username || 'art'}/60/60`;
+  const isLiked = likedIds.has(a.id);
+  const isSold  = a.status === 'sold';
+
+  document.getElementById('modalImg').src = a.imageUrl;
+  document.getElementById('modalImg').alt = a.title;
+  document.getElementById('modalArtistAvatar').src = avatar;
+  document.getElementById('modalArtistName').textContent   = owner.displayName || owner.username || 'Artist';
+  document.getElementById('modalArtistHandle').textContent = '@' + (owner.username || 'artist');
+  document.getElementById('modalTitle').textContent        = a.title;
+  document.getElementById('modalCategory').textContent     = a.category;
+  document.getElementById('modalLikeCount').textContent    = a.likeCount;
+  document.getElementById('modalPriceVal').textContent     = Number(a.price).toFixed(0);
+  document.getElementById('modalDesc').textContent         =
+    a.aiGeneratedDescription || a.description || 'No description provided.';
+
+  const priceEl = document.getElementById('modalPrice');
+  priceEl.className = 'modal-price' + (isSold ? ' sold-price' : '');
+
+  // Buy button
+  const buyBtn = document.getElementById('modalBuyBtn');
+  if (isSold) {
+    buyBtn.textContent = 'Sold';
+    buyBtn.disabled = true;
+    buyBtn.style.opacity = '.5';
+  } else {
+    buyBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V22H4V12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>Buy / Enquire`;
+    buyBtn.disabled = false;
+    buyBtn.style.opacity = '1';
+    buyBtn.onclick = () => { showToast('Enquiry sent to ' + (owner.displayName || 'the artist') + '!'); };
+  }
+
+  // Tags
+  const tags = (a.aiTags || []);
+  document.getElementById('modalTags').innerHTML =
+    tags.map(t => `<span class="modal-tag">#${escHtml(t)}</span>`).join('') ||
+    `<span class="modal-tag">#${(a.category || 'art').toLowerCase()}</span>`;
+
+  // Like fab
+  syncModalLikeBtn(isLiked);
+
+  // Follow button
+  const followBtn = document.getElementById('modalFollowBtn');
+  const isMe = currentUser && currentUser.id === (owner.id || owner.username);
+  followBtn.style.display = isMe ? 'none' : '';
+  const isFollowing = followingUsers.has(owner.username);
+  followBtn.textContent = isFollowing ? 'Following' : 'Follow';
+  followBtn.className = 'modal-follow-btn' + (isFollowing ? ' following' : '');
+
+  // Reset comments
+  document.getElementById('commentList').innerHTML = '<div class="comment-placeholder">Be the first to comment ✦</div>';
+  document.getElementById('commentInput').value = '';
+  const commentRow = document.getElementById('commentInputRow');
+  commentRow.style.display = currentUser ? 'flex' : 'none';
+
+  // Related: clear immediately
+  document.getElementById('relatedScroll').innerHTML = '<div class="spinner-dot" style="background:#DDD7C8;width:10px;height:10px;border-radius:50%;margin:0 auto;"></div>';
+}
+
+function syncModalLikeBtn(isLiked) {
+  const fab = document.getElementById('modalLikeFab');
+  fab.className = 'modal-like-fab' + (isLiked ? ' liked' : '');
+  const icon = document.getElementById('modalLikeIcon');
+  icon.setAttribute('fill',   isLiked ? '#E0483A' : 'none');
+  icon.setAttribute('stroke', isLiked ? '#E0483A' : '#333');
+}
+
+async function modalToggleLike() {
+  if (!currentUser) { showToast('Sign in to like artz'); return; }
+  if (!currentModalArtwork) return;
+  const fab = document.getElementById('modalLikeFab');
+  // Reuse card-level toggle
+  const wasLiked = likedIds.has(currentModalArtwork.id);
+  if (wasLiked) likedIds.delete(currentModalArtwork.id); else likedIds.add(currentModalArtwork.id);
+  syncModalLikeBtn(!wasLiked);
+  // animate
+  fab.style.transform = 'scale(1.25)';
+  setTimeout(() => { fab.style.transform = ''; }, 180);
+
+  try {
+    const data = await gql(`mutation Like($id:ID!){toggleLike(artworkId:$id){id likeCount likedByMe}}`,
+      { id: currentModalArtwork.id });
+    const u = data.toggleLike;
+    document.getElementById('modalLikeCount').textContent = u.likeCount;
+    if (!u.likedByMe) likedIds.delete(currentModalArtwork.id); else likedIds.add(currentModalArtwork.id);
+    syncModalLikeBtn(u.likedByMe);
+    // re-render grid card
+    const idx = allArtworks.findIndex(a => a.id === currentModalArtwork.id);
+    if (idx !== -1) { allArtworks[idx].likeCount = u.likeCount; allArtworks[idx].likedByMe = u.likedByMe; }
+    renderGrid();
+  } catch(err) {
+    showToast('Like failed');
+  }
+}
+
+async function toggleFollowInModal() {
+  if (!currentUser) { showToast('Sign in to follow artists'); return; }
+  const owner = currentModalArtwork?.owner;
+  if (!owner) return;
+  const btn = document.getElementById('modalFollowBtn');
+  const isFollowing = followingUsers.has(owner.username);
+  try {
+    if (isFollowing) {
+      await gql(`mutation Unfollow($u:String!){unfollow(username:$u){id}}`, { u: owner.username });
+      followingUsers.delete(owner.username);
+    } else {
+      await gql(`mutation Follow($u:String!){follow(username:$u){id}}`, { u: owner.username });
+      followingUsers.add(owner.username);
+    }
+    const nowFollowing = !isFollowing;
+    btn.textContent = nowFollowing ? 'Following' : 'Follow';
+    btn.className = 'modal-follow-btn' + (nowFollowing ? ' following' : '');
+    showToast(nowFollowing ? `Following ${owner.displayName || owner.username}` : 'Unfollowed');
+  } catch(err) { showToast('Follow failed'); }
+}
+
+function closeModal() {
+  document.getElementById('artworkModal').classList.remove('open');
+  document.body.style.overflow = '';
+  currentModalArtwork = null;
+}
+
+function handleModalBackdropClick(e) {
+  if (e.target.id === 'artworkModal') closeModal();
+}
+
+/* ─────────────────────────────────────────
+   COMMENTS
+───────────────────────────────────────── */
+async function postComment() {
+  if (!currentUser) { showToast('Sign in to comment'); return; }
+  const input = document.getElementById('commentInput');
+  const text = input.value.trim();
+  if (!text || !currentModalArtwork) return;
+  input.value = '';
+
+  // Optimistic render
+  const list = document.getElementById('commentList');
+  const placeholder = list.querySelector('.comment-placeholder');
+  if (placeholder) placeholder.remove();
+  const avatar = currentUser.avatarUrl || `https://picsum.photos/seed/${currentUser.username}/60/60`;
+  const div = document.createElement('div');
+  div.className = 'comment-item';
+  div.innerHTML = `
+    <img src="${avatar}" alt="">
+    <div class="comment-bubble">
+      <div class="comment-author">${escHtml(currentUser.displayName || currentUser.username)}</div>
+      <div class="comment-text">${escHtml(text)}</div>
+    </div>`;
+  list.prepend(div);
+  div.style.opacity = '.6';
+
+  try {
+    await gql(`
+      mutation Comment($id:ID!, $text:String!) { commentOnArtz(artworkId:$id, text:$text) { id } }
+    `, { id: currentModalArtwork.id, text });
+    div.style.opacity = '1';
+    showToast('Comment posted ✓');
+  } catch(err) {
+    div.remove();
+    input.value = text;
+    showToast('Comment failed — is the backend running?');
+  }
+}
+
+/* ─────────────────────────────────────────
+   RELATED ARTWORKS
+───────────────────────────────────────── */
+async function loadRelated(artworkId) {
+  const container = document.getElementById('relatedScroll');
+  try {
+    const data = await gql(`
+      query Related($id:ID!) {
+        recommendedArtz(artworkId:$id) {
+          id title imageUrl price
+        }
+      }
+    `, { id: artworkId });
+    const related = data.recommendedArtz || [];
+    if (!related.length) { container.innerHTML = '<div style="font-size:12px;color:var(--muted);">No related artz found.</div>'; return; }
+    container.innerHTML = related.map(r => `
+      <div class="related-card" onclick="openModal('${r.id}')">
+        <img src="${r.imageUrl}" alt="${escHtml(r.title)}" loading="lazy">
+        <div class="related-title">${escHtml(r.title)}</div>
+      </div>`).join('');
+  } catch(err) {
+    container.innerHTML = '<div style="font-size:12px;color:var(--muted);">—</div>';
+  }
+}
+
+/* ─────────────────────────────────────────
+   FOR YOU STRIP (AI Picks)
+───────────────────────────────────────── */
+async function loadRecommendations(seedArtworkId) {
+  const container = document.getElementById('fyScroll');
+  try {
+    const data = await gql(`
+      query Recs($id:ID!) {
+        recommendedArtz(artworkId:$id) {
+          id title imageUrl price category
+        }
+      }
+    `, { id: seedArtworkId });
+    const recs = data.recommendedArtz || [];
+    if (!recs.length) { hideFySection(); return; }
+    container.innerHTML = recs.map(r => `
+      <div class="fy-card" onclick="openModal('${r.id}')">
+        <span class="fy-card-badge">✦ Pick</span>
+        <img src="${r.imageUrl}" alt="${escHtml(r.title)}" loading="lazy">
+        <div class="fy-card-info">
+          <div class="fy-card-title">${escHtml(r.title)}</div>
+          <div class="fy-card-price">$${Number(r.price).toFixed(0)} · ${r.category}</div>
+        </div>
+      </div>`).join('');
+  } catch(err) {
+    hideFySection();
+  }
+}
+
+/* ─────────────────────────────────────────
+   SIDEBAR: Trending Artists & Tags
+───────────────────────────────────────── */
+function loadSidebar() {
+  // Trending Artists — derive from loaded artwork owners
+  const artistMap = {};
+  allArtworks.forEach(a => {
+    if (!a.owner) return;
+    const u = a.owner.username;
+    if (!artistMap[u]) artistMap[u] = { ...a.owner, count: 0 };
+    artistMap[u].count++;
+  });
+  const artists = Object.values(artistMap).sort((a, b) => b.count - a.count).slice(0, 5);
+  // Fallback demo artists if none
+  const demoArtists = [
+    { username:'mayasolano', displayName:'Maya Solano', avatarUrl:'https://picsum.photos/seed/avatar/60/60' },
+    { username:'tomasrivera', displayName:'Tomas Rivera', avatarUrl:'https://picsum.photos/seed/artist2/60/60' },
+    { username:'priya_n', displayName:'Priya Nair', avatarUrl:'https://picsum.photos/seed/artist3/60/60' },
+    { username:'studio.harlan', displayName:'Studio Harlan', avatarUrl:'https://picsum.photos/seed/artist4/60/60' },
+  ];
+  const finalArtists = artists.length ? artists : demoArtists;
+
+  document.getElementById('trendingArtists').innerHTML = finalArtists.map(a => `
+    <div class="artist-row">
+      <img src="${a.avatarUrl || `https://picsum.photos/seed/${a.username}/60/60`}" alt="${escHtml(a.displayName || '')}">
+      <div class="artist-info">
+        <div class="artist-name">${escHtml(a.displayName || a.username)}</div>
+        <div class="artist-handle">@${escHtml(a.username)}</div>
+      </div>
+      <button class="follow-btn" onclick="sidebarFollow('${a.username}', this)">Follow</button>
+    </div>`).join('');
+
+  // Trending Tags — collect from all aiTags
+  const tagCount = {};
+  allArtworks.forEach(a => (a.aiTags || []).forEach(t => { tagCount[t] = (tagCount[t]||0)+1; }));
+  const topTags = Object.entries(tagCount).sort((a,b)=>b[1]-a[1]).slice(0,14).map(([t])=>t);
+  const fallbackTags = ['coastal','indigo','textile','ink','plein-air','mixed-media','digital','harbour','found-object','monochrome'];
+  const finalTags = topTags.length ? topTags : fallbackTags;
+  document.getElementById('trendingTags').innerHTML =
+    finalTags.map(t => `<span class="tag-pill" onclick="tagSearch('${t}')">#${escHtml(t)}</span>`).join('');
+}
+
+async function sidebarFollow(username, btn) {
+  if (!currentUser) { showToast('Sign in to follow artists'); return; }
+  const isFollowing = followingUsers.has(username);
+  try {
+    if (isFollowing) {
+      await gql(`mutation Unfollow($u:String!){unfollow(username:$u){id}}`, { u: username });
+      followingUsers.delete(username);
+      btn.textContent = 'Follow'; btn.classList.remove('following');
+    } else {
+      await gql(`mutation Follow($u:String!){follow(username:$u){id}}`, { u: username });
+      followingUsers.add(username);
+      btn.textContent = 'Following'; btn.classList.add('following');
+    }
+  } catch(err) { showToast('Action failed'); }
+}
+
+function tagSearch(tag) {
+  const inp = document.getElementById('searchInput');
+  inp.value = tag;
+  performSearch(tag);
+  // Activate "All" filter
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  document.querySelector('[data-cat="All"]').classList.add('active');
+  selectedCat = 'All';
+}
+
+/* ─────────────────────────────────────────
+   SIDEBAR: Collections
+───────────────────────────────────────── */
+async function loadCollectionsSidebar() {
+  if (!currentUser) return;
+  try {
+    const data = await gql(`query { myCollections { id name coverImageUrl } }`);
+    const cols = data.myCollections || [];
+    if (!cols.length) return;
+    const card = document.getElementById('collectionsCard');
+    card.style.display = '';
+    document.getElementById('quickCollections').innerHTML = cols.slice(0,4).map(c => `
+      <div class="collection-mini" onclick="window.location.href='profile.html#favorites'">
+        <div class="collection-thumb">
+          <img src="${c.coverImageUrl || 'https://picsum.photos/seed/' + c.id + '/80/80'}" alt="">
+        </div>
+        <div>
+          <div class="collection-mini-name">${escHtml(c.name)}</div>
+          <div class="collection-mini-count">Collection</div>
+        </div>
+      </div>`).join('');
+  } catch(e) {}
+}
+
+/* ─────────────────────────────────────────
+   NOTIFICATIONS
+───────────────────────────────────────── */
+const NOTIF_ICONS = {
+  like:    `<svg viewBox="0 0 24 24" fill="#E0483A" stroke="#E0483A" stroke-width="1.5" class="notif-icon like"><path d="M12 21s-7.5-4.9-10-9.6C.4 7.8 2.3 4 6 4c2.1 0 3.6 1.1 4.8 2.7C12 5.1 13.5 4 15.6 4c3.7 0 5.6 3.8 4 7.4C19.5 16.1 12 21 12 21z"/></svg>`,
+  comment: `<svg viewBox="0 0 24 24" fill="none" stroke="#2E63C9" stroke-width="2" class="notif-icon comment"><path d="M21 11.5a8.4 8.4 0 01-9.8 8.3 8.6 8.6 0 01-2.6-.3L3 21l1.6-4.8A8.4 8.4 0 1121 11.5z"/></svg>`,
+  follow:  `<svg viewBox="0 0 24 24" fill="none" stroke="#2E7D4F" stroke-width="2" class="notif-icon follow"><circle cx="9" cy="8" r="4"/><path d="M2 21v-1a6 6 0 016-6h2a6 6 0 016 6v1"/><path d="M19 8v6M22 11h-6"/></svg>`,
+  sale:    `<svg viewBox="0 0 24 24" fill="none" stroke="#B38A0F" stroke-width="2" class="notif-icon sale"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5C9.5 8.1 10.7 7 12 7s2.5.9 2.5 2c0 3-5 1.5-5 4.5 0 1.1 1.2 2 2.5 2s2.5-1 2.5-2.3"/></svg>`,
+};
+
+async function loadNotifications() {
+  const list = document.getElementById('notifList');
+  try {
+    const data = await gql(`
+      query { myActivity(unreadOnly: false) {
+        id type read createdAt amountCents
+        actor { displayName username avatarUrl }
+        artwork { title }
+        commentText
+      }}
+    `);
+    const activities = data.myActivity || [];
+    const unread = activities.filter(a => !a.read).length;
+    // Update badges
+    if (unread > 0) {
+      document.getElementById('notifBadge').style.display = 'flex';
+      document.getElementById('notifBadge').textContent = unread > 9 ? '9+' : unread;
+      document.getElementById('tabBadge').textContent = unread > 9 ? '9+' : unread;
+    } else {
+      document.getElementById('notifBadge').style.display = 'none';
+      document.getElementById('tabBadge').style.display = 'none';
+    }
+
+    if (!activities.length) { list.innerHTML = '<div class="notif-empty">All quiet here ✦</div>'; return; }
+
+    list.innerHTML = activities.slice(0,15).map(a => {
+      const actor = a.actor || {};
+      const text = buildNotifText(a, actor);
+      const time = timeAgo(a.createdAt);
+      return `<div class="notif-item ${a.read ? '' : 'unread'}">
+        <div>${NOTIF_ICONS[a.type] || ''}</div>
+        <div class="notif-body">${text}<div class="notif-time">${time}</div></div>
+        ${!a.read ? '<div class="notif-dot"></div>' : ''}
+      </div>`;
+    }).join('');
+  } catch(err) {
+    list.innerHTML = '<div class="notif-empty">Start the backend to see notifications</div>';
+  }
+}
+
+function buildNotifText(a, actor) {
+  const name = `<b>${escHtml(actor.displayName || actor.username || 'Someone')}</b>`;
+  const artwork = a.artwork ? `<b>${escHtml(a.artwork.title)}</b>` : 'your artz';
+  switch(a.type) {
+    case 'like':    return `${name} liked ${artwork}`;
+    case 'comment': return `${name} commented: "${escHtml(a.commentText || '')}"`;
+    case 'follow':  return `${name} started following you`;
+    case 'sale':    return `${artwork} sold for $${((a.amountCents || 0)/100).toFixed(0)} to ${name}`;
+    default:        return `${name} interacted with your artz`;
+  }
+}
+
+async function markAllRead() {
+  try {
+    await gql(`mutation { markAllActivityRead }`);
+    document.getElementById('notifBadge').style.display = 'none';
+    document.getElementById('tabBadge').style.display = 'none';
+    document.querySelectorAll('.notif-item.unread').forEach(el => el.classList.remove('unread'));
+    document.querySelectorAll('.notif-dot').forEach(el => el.remove());
+    showToast('All notifications marked as read');
+  } catch(err) { showToast('Action failed'); }
+}
+
+/* ─────────────────────────────────────────
+   INFINITE SCROLL
+───────────────────────────────────────── */
+function setupInfiniteScroll() {
+  const anchor = document.getElementById('infiniteAnchor');
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !isLoading) {
+      // For demo: no real pagination — just show spinner briefly
+    }
+  }, { threshold: 0.1 });
+  if (anchor) observer.observe(anchor);
+}
+
+/* ─────────────────────────────────────────
+   SAVE TO COLLECTION (optimistic + prompt)
+───────────────────────────────────────── */
+function saveToCollection(artworkId) {
+  if (!currentUser) { showToast('Sign in to save artz ✦'); return; }
+  showToast('Saved to your collection ✦');
+  // In full implementation: open a collection picker modal
+}
+
+function shareArtwork() {
+  if (navigator.clipboard && currentModalArtwork) {
+    navigator.clipboard.writeText(window.location.origin + '?artwork=' + currentModalArtwork.id)
+      .then(() => showToast('Link copied to clipboard ✓'))
+      .catch(() => showToast('Share: artwork/' + (currentModalArtwork?.id?.slice(0, 8) || '')));
+  } else {
+    showToast('Link copied ✓');
+  }
+}
+
+/* ─────────────────────────────────────────
+   UPLOAD MODAL
+───────────────────────────────────────── */
+function openUploadModal() {
+  if (!currentUser) { showToast('Sign in to upload artz'); window.location.href = 'login.html'; return; }
+  document.getElementById('uploadModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeUploadModal() {
+  document.getElementById('uploadModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ─────────────────────────────────────────
+   TOAST
+───────────────────────────────────────── */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+/* ─────────────────────────────────────────
+   DEMO FALLBACK (backend offline)
+───────────────────────────────────────── */
+function useDemoData() {
+  allArtworks = [
+    { id:'d1', title:'Coastal Fragment I',  description:'Hand-dyed indigo textile study.',  price:180, currency:'USD', category:'Textile',      imageUrl:'https://picsum.photos/seed/a1/400/560', status:'available', likeCount:42, likedByMe:false, aiTags:['indigo','coastal','textile'],         owner:{ id:'u1', username:'mayasolano', displayName:'Maya Solano', avatarUrl:'https://picsum.photos/seed/avatar/60/60' }, createdAt: new Date().toISOString() },
+    { id:'d2', title:'Low Tide',            description:'Ink on cotton rag paper.',          price:95,  currency:'USD', category:'Painting',     imageUrl:'https://picsum.photos/seed/a2/400/320', status:'available', likeCount:28, likedByMe:false, aiTags:['ink','monochrome','coastal'],          owner:{ id:'u1', username:'mayasolano', displayName:'Maya Solano', avatarUrl:'https://picsum.photos/seed/avatar/60/60' }, createdAt: new Date().toISOString() },
+    { id:'d3', title:'Salt Line',           description:'Mixed media coastal series.',       price:210, currency:'USD', category:'Painting',     imageUrl:'https://picsum.photos/seed/a3/400/480', status:'available', likeCount:61, likedByMe:false, aiTags:['mixed-media','coastal'],              owner:{ id:'u1', username:'mayasolano', displayName:'Maya Solano', avatarUrl:'https://picsum.photos/seed/avatar/60/60' }, createdAt: new Date().toISOString() },
+    { id:'d4', title:'Weft & Weather',      description:'Woven textile wall piece.',         price:340, currency:'USD', category:'Textile',      imageUrl:'https://picsum.photos/seed/a4/400/300', status:'sold',      likeCount:89, likedByMe:false, aiTags:['woven','textile','wall-art'],         owner:{ id:'u1', username:'mayasolano', displayName:'Maya Solano', avatarUrl:'https://picsum.photos/seed/avatar/60/60' }, createdAt: new Date().toISOString() },
+    { id:'d5', title:'Estuary Sketch',      description:'Quick plein-air ink study.',        price:60,  currency:'USD', category:'Illustration', imageUrl:'https://picsum.photos/seed/a5/400/420', status:'available', likeCount:17, likedByMe:false, aiTags:['sketch','plein-air'],                 owner:{ id:'u1', username:'mayasolano', displayName:'Maya Solano', avatarUrl:'https://picsum.photos/seed/avatar/60/60' }, createdAt: new Date().toISOString() },
+    { id:'d6', title:'Driftwood Form',      description:'Small found-wood sculpture.',       price:150, currency:'USD', category:'Sculpture',    imageUrl:'https://picsum.photos/seed/a6/400/500', status:'available', likeCount:34, likedByMe:false, aiTags:['driftwood','found-object'],           owner:{ id:'u1', username:'mayasolano', displayName:'Maya Solano', avatarUrl:'https://picsum.photos/seed/avatar/60/60' }, createdAt: new Date().toISOString() },
+    { id:'d7', title:'Marsh Light',         description:'Digital study, coastal palette.',   price:75,  currency:'USD', category:'Digital',      imageUrl:'https://picsum.photos/seed/a7/400/360', status:'available', likeCount:22, likedByMe:false, aiTags:['digital','coastal','light'],          owner:{ id:'u1', username:'mayasolano', displayName:'Maya Solano', avatarUrl:'https://picsum.photos/seed/avatar/60/60' }, createdAt: new Date().toISOString() },
+    { id:'d8', title:'Rope & Rust',         description:'Photograph, harbour series.',       price:120, currency:'USD', category:'Photography',  imageUrl:'https://picsum.photos/seed/a8/400/440', status:'available', likeCount:45, likedByMe:false, aiTags:['harbour','photography'],              owner:{ id:'u1', username:'mayasolano', displayName:'Maya Solano', avatarUrl:'https://picsum.photos/seed/avatar/60/60' }, createdAt: new Date().toISOString() },
+    { id:'d9', title:'Harbour Study',       description:'Acrylic on board.',                 price:220, currency:'USD', category:'Painting',     imageUrl:'https://picsum.photos/seed/artz10/400/520', status:'available', likeCount:37, likedByMe:false, aiTags:['acrylic','harbour'],             owner:{ id:'u2', username:'tomasrivera', displayName:'Tomas Rivera', avatarUrl:'https://picsum.photos/seed/artist2/60/60' }, createdAt: new Date().toISOString() },
+    { id:'d10', title:'Deep Blue Fragment', description:'Oil pastel on linen.',              price:310, currency:'USD', category:'Painting',     imageUrl:'https://picsum.photos/seed/artz11/400/390', status:'available', likeCount:53, likedByMe:false, aiTags:['oil-pastel','blue','linen'],      owner:{ id:'u3', username:'priya_n', displayName:'Priya Nair', avatarUrl:'https://picsum.photos/seed/artist3/60/60' }, createdAt: new Date().toISOString() },
+    { id:'d11', title:'Silt & Smoke',       description:'Experimental mixed media.',        price:95,  currency:'USD', category:'Illustration', imageUrl:'https://picsum.photos/seed/artz12/400/460', status:'available', likeCount:19, likedByMe:false, aiTags:['experimental','smoke'],           owner:{ id:'u4', username:'studio.harlan', displayName:'Studio Harlan', avatarUrl:'https://picsum.photos/seed/artist4/60/60' }, createdAt: new Date().toISOString() },
+    { id:'d12', title:'Golden Hour Lens',   description:'Film photograph, dusk series.',    price:140, currency:'USD', category:'Photography',  imageUrl:'https://picsum.photos/seed/artz13/400/300', status:'available', likeCount:66, likedByMe:false, aiTags:['film','golden-hour','portrait'],  owner:{ id:'u3', username:'priya_n', displayName:'Priya Nair', avatarUrl:'https://picsum.photos/seed/artist3/60/60' }, createdAt: new Date().toISOString() },
+  ];
+  displayedArtz = [...allArtworks];
+  isLoading = false;
+  renderGrid();
+  loadSidebar();
+
+  // Demo "For You" strip
+  const fyScroll = document.getElementById('fyScroll');
+  fyScroll.innerHTML = allArtworks.slice(0,6).map(a => `
+    <div class="fy-card" onclick="openModal('${a.id}')">
+      <span class="fy-card-badge">✦ Pick</span>
+      <img src="${a.imageUrl}" alt="${escHtml(a.title)}" loading="lazy">
+      <div class="fy-card-info">
+        <div class="fy-card-title">${escHtml(a.title)}</div>
+        <div class="fy-card-price">$${Number(a.price).toFixed(0)} · ${a.category}</div>
+      </div>
+    </div>`).join('');
+
+  // Demo notifications
+  const notifList = document.getElementById('notifList');
+  notifList.innerHTML = `
+    <div class="notif-item unread">
+      <div class="notif-icon sale"><svg viewBox="0 0 24 24" fill="none" stroke="#B38A0F" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5C9.5 8.1 10.7 7 12 7s2.5.9 2.5 2c0 3-5 1.5-5 4.5 0 1.1 1.2 2 2.5 2s2.5-1 2.5-2.3"/></svg></div>
+      <div class="notif-body"><b>Weft &amp; Weather</b> sold for $340<div class="notif-time">2h ago</div></div>
+      <div class="notif-dot"></div>
+    </div>
+    <div class="notif-item unread">
+      <div class="notif-icon like"><svg viewBox="0 0 24 24" fill="#E0483A" stroke="#E0483A" stroke-width="1.5"><path d="M12 21s-7.5-4.9-10-9.6C.4 7.8 2.3 4 6 4c2.1 0 3.6 1.1 4.8 2.7C12 5.1 13.5 4 15.6 4c3.7 0 5.6 3.8 4 7.4C19.5 16.1 12 21 12 21z"/></svg></div>
+      <div class="notif-body"><b>Priya N.</b> liked your artz <b>Salt Line</b><div class="notif-time">4h ago</div></div>
+      <div class="notif-dot"></div>
+    </div>
+    <div class="notif-item unread">
+      <div class="notif-icon comment"><svg viewBox="0 0 24 24" fill="none" stroke="#2E63C9" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 01-9.8 8.3 8.6 8.6 0 01-2.6-.3L3 21l1.6-4.8A8.4 8.4 0 1121 11.5z"/></svg></div>
+      <div class="notif-body"><b>Tomas R.</b> commented: "love the texture here"<div class="notif-time">6h ago</div></div>
+      <div class="notif-dot"></div>
+    </div>
+    <div class="notif-item">
+      <div class="notif-icon follow"><svg viewBox="0 0 24 24" fill="none" stroke="#2E7D4F" stroke-width="2"><circle cx="9" cy="8" r="4"/><path d="M2 21v-1a6 6 0 016-6h2a6 6 0 016 6v1"/><path d="M19 8v6M22 11h-6"/></svg></div>
+      <div class="notif-body"><b>studio.harlan</b> started following you<div class="notif-time">1d ago</div></div>
+    </div>`;
+  document.getElementById('notifBadge').style.display = 'flex';
+  document.getElementById('notifBadge').textContent = '3';
+}
+
+/* ─────────────────────────────────────────
+   UTILS
+───────────────────────────────────────── */
+function escHtml(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function timeAgo(iso) {
+  if (!iso) return '';
+  const sec = Math.floor((Date.now() - new Date(iso)) / 1000);
+  if (sec < 60)   return 'just now';
+  if (sec < 3600) return Math.floor(sec/60) + 'm ago';
+  if (sec < 86400) return Math.floor(sec/3600) + 'h ago';
+  return Math.floor(sec/86400) + 'd ago';
+}
+
+/* ─────────────────────────────────────────
+   URL PARAM: open artwork directly
+───────────────────────────────────────── */
+function checkUrlArtwork() {
+  const id = new URLSearchParams(window.location.search).get('artwork');
+  if (id) {
+    const found = allArtworks.find(a => a.id === id);
+    if (found) openModal(id);
+  }
+}
+
+/* ─────────────────────────────────────────
+   KEYBOARD
+───────────────────────────────────────── */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeModal();
+    closeUploadModal();
+    closeProfileDropdown();
+    closeNotifPanel();
+  }
+});
+
+/* Boot */
+init().then(() => checkUrlArtwork());
+</script>
+</body>
+</html>

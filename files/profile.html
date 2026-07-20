@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>THE ARTZ — Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAF7F2;
+    --panel:#FFFFFF;
+    --ink:#14120F;
+    --ink-soft:#5B5643;
+    --muted:#9A927D;
+    --line:#E7E1D4;
+    --black:#0E0D0B;
+    --sh:rgba(20,18,15,0.10);
+    --sh-strong:rgba(20,18,15,0.22);
+    --danger:#B3432B;
+    --up:#2E7D4F;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  }
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+  ::selection{ background:var(--ink); color:#fff; }
+
+  /* ---------------- top nav ---------------- */
+  .topnav{
+    position:sticky; top:0; z-index:40;
+    background:rgba(250,247,242,0.9);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topnav-inner{
+    max-width:1180px; margin:0 auto;
+    display:flex; align-items:center; gap:18px;
+    padding:12px 24px;
+  }
+  .brand{ display:flex; align-items:center; gap:8px; font-weight:800; font-size:17px; letter-spacing:-0.01em; flex-shrink:0;}
+  .brand .mark{ width:28px;height:28px;border-radius:8px; background:var(--black); display:flex; align-items:center; justify-content:center;}
+  .brand .mark svg{ width:15px;height:15px; }
+  .search-pill{
+    flex:1; max-width:420px;
+    display:flex; align-items:center; gap:8px;
+    background:#F1ECE0; border-radius:999px;
+    padding:9px 16px; color:var(--muted); font-size:13.5px;
+  }
+  .search-pill svg{ width:15px;height:15px; flex-shrink:0; }
+  .topnav-right{ margin-left:auto; display:flex; align-items:center; gap:10px; }
+  .icon-btn{
+    width:36px;height:36px; border-radius:50%; border:1px solid var(--line);
+    background:var(--panel); display:flex; align-items:center; justify-content:center;
+    transition: box-shadow .15s ease, transform .15s ease;
+  }
+  .icon-btn:hover{ box-shadow:0 6px 16px var(--sh); transform:translateY(-1px); }
+  .icon-btn svg{ width:17px; height:17px; }
+  .nav-avatar{ width:36px;height:36px;border-radius:50%; object-fit:cover; border:1.5px solid var(--line); }
+
+  .subnav{
+    max-width:1180px; margin:0 auto; padding:0 24px;
+    display:flex; gap:6px; overflow-x:auto;
+  }
+  .subnav a{
+    text-decoration:none; font-size:13px; font-weight:600; color:var(--ink-soft);
+    padding:12px 14px; border-bottom:2px solid transparent; white-space:nowrap;
+  }
+  .subnav a:hover{ color:var(--ink); }
+  .subnav a.active{ color:var(--ink); border-color:var(--ink); }
+
+  .shell{ max-width:1180px; margin:0 auto; padding:0 24px 100px; }
+  section{ padding-top:52px; }
+  .section-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:22px; flex-wrap:wrap; }
+  .section-head h2{ font-size:21px; margin:0 0 4px; letter-spacing:-0.01em; }
+  .section-head p{ margin:0; color:var(--ink-soft); font-size:13.5px; }
+
+  .pill-btn{
+    display:inline-flex; align-items:center; gap:7px;
+    padding:10px 20px; border-radius:999px; border:none;
+    background:var(--black); color:#fff; font-weight:700; font-size:13.5px;
+    box-shadow:0 8px 20px rgba(14,13,11,0.16);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .pill-btn:hover{ transform:translateY(-2px); box-shadow:0 12px 26px rgba(14,13,11,0.24); }
+  .pill-btn.ghost{
+    background:var(--panel); color:var(--ink); border:1.5px solid var(--line); box-shadow:none;
+  }
+  .pill-btn.ghost:hover{ box-shadow:0 6px 16px var(--sh); border-color:#D9D1BC; }
+  .pill-btn.small{ padding:7px 14px; font-size:12.5px; }
+  .pill-btn svg{ width:14px;height:14px; }
+
+  /* ---------------- profile header ---------------- */
+  .profile-header{
+    padding-top:44px;
+    display:flex; gap:26px; align-items:center; flex-wrap:wrap;
+  }
+  .avatar-wrap{ position:relative; flex-shrink:0; }
+  .avatar-wrap img{
+    width:118px;height:118px;border-radius:50%; object-fit:cover;
+    border:4px solid var(--panel); box-shadow:0 10px 26px var(--sh-strong);
+  }
+  .avatar-wrap .edit-dot{
+    position:absolute; right:2px; bottom:2px;
+    width:32px;height:32px;border-radius:50%;
+    background:var(--black); color:#fff; border:3px solid var(--bg);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .avatar-wrap .edit-dot svg{ width:14px;height:14px; }
+  .profile-meta{ flex:1; min-width:240px; }
+  .profile-meta h1{ font-size:25px; margin:0 0 4px; letter-spacing:-0.01em; }
+  .profile-meta .handle{ color:var(--muted); font-size:13.5px; margin-bottom:10px; }
+  .profile-meta .bio{ color:var(--ink-soft); font-size:14px; max-width:560px; line-height:1.55; margin-bottom:14px; }
+  .stat-row{ display:flex; gap:22px; flex-wrap:wrap; margin-bottom:16px; }
+  .stat-row .stat b{ font-size:16px; display:block; }
+  .stat-row .stat span{ font-size:12px; color:var(--muted); }
+  .header-actions{ display:flex; gap:10px; flex-shrink:0; }
+
+  /* ---------------- masonry ---------------- */
+  .masonry{
+    column-count:2; column-gap:16px;
+  }
+  @media(min-width:640px){ .masonry{ column-count:3; } }
+  @media(min-width:960px){ .masonry{ column-count:4; } }
+  .art-card{
+    break-inside:avoid; margin-bottom:16px; position:relative;
+    border-radius:16px; overflow:hidden; background:var(--panel);
+    box-shadow:0 2px 8px var(--sh);
+    transition: transform .22s ease, box-shadow .22s ease;
+  }
+  .art-card:hover{ transform: translateY(-4px) scale(1.015); box-shadow:0 18px 34px var(--sh-strong); }
+  .art-card img{ width:100%; display:block; }
+  .art-card .overlay{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.62) 100%);
+    opacity:0; transition:opacity .2s ease;
+    display:flex; flex-direction:column; justify-content:space-between;
+    padding:10px;
+  }
+  .art-card:hover .overlay{ opacity:1; }
+  .overlay-top{ display:flex; justify-content:flex-end; gap:6px; }
+  .overlay-top button{
+    width:30px;height:30px;border-radius:50%; border:none;
+    background:rgba(255,255,255,0.92); display:flex; align-items:center; justify-content:center;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  }
+  .overlay-top button svg{ width:14px;height:14px; }
+  .overlay-top button.like.active svg path{ fill:#E0483A; stroke:#E0483A; }
+  .overlay-bottom{ color:#fff; }
+  .overlay-bottom .t{ font-weight:700; font-size:13.5px; }
+  .price-tag{
+    position:absolute; top:10px; left:10px;
+    background:var(--black); color:#fff; font-weight:700; font-size:12px;
+    padding:5px 11px; border-radius:999px; transform:rotate(-3deg);
+    box-shadow:0 6px 14px rgba(0,0,0,0.25);
+  }
+  .empty-state{
+    border:1.5px dashed var(--line); border-radius:16px; padding:44px 20px; text-align:center; color:var(--ink-soft);
+  }
+
+  /* ---------------- payment row ---------------- */
+  .pay-row{ display:flex; gap:16px; flex-wrap:wrap; }
+  .pay-card{
+    flex:1; min-width:230px;
+    background:var(--panel); border:1px solid var(--line); border-radius:18px;
+    padding:20px; display:flex; align-items:center; gap:14px;
+    transition: box-shadow .18s ease, transform .18s ease;
+  }
+  .pay-card:hover{ box-shadow:0 12px 26px var(--sh); transform:translateY(-2px); }
+  .pay-icon{
+    width:46px;height:46px;border-radius:12px; background:#F1ECE0;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .pay-icon svg{ width:24px;height:24px; }
+  .pay-card .pay-title{ font-weight:700; font-size:14.5px; margin-bottom:2px; }
+  .pay-card .pay-sub{ font-size:12.5px; color:var(--muted); }
+  .pay-card input{
+    margin-top:8px; width:100%; border:1px solid var(--line); border-radius:999px;
+    padding:8px 14px; font-size:12.5px; font-family:inherit; outline:none;
+  }
+  .pay-card .pay-body{ flex:1; }
+
+  /* ---------------- collections ---------------- */
+  .collections-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:16px;
+  }
+  .collection-card{
+    border-radius:16px; overflow:hidden; background:var(--panel); border:1px solid var(--line);
+    transition: box-shadow .18s ease, transform .18s ease; cursor:pointer;
+  }
+  .collection-card:hover{ box-shadow:0 14px 28px var(--sh); transform:translateY(-3px); }
+  .collection-thumbs{ display:grid; grid-template-columns:1fr 1fr; gap:2px; height:110px; }
+  .collection-thumbs img{ width:100%; height:100%; object-fit:cover; }
+  .collection-thumbs img:first-child{ grid-row:span 2; }
+  .collection-meta{ padding:12px 14px; }
+  .collection-meta b{ font-size:13.5px; }
+  .collection-meta span{ display:block; font-size:11.5px; color:var(--muted); margin-top:2px; }
+
+  /* ---------------- activity ---------------- */
+  .activity-list{ display:flex; flex-direction:column; gap:2px; }
+  .activity-item{
+    display:flex; align-items:center; gap:14px;
+    padding:14px 10px; border-bottom:1px solid var(--line);
+  }
+  .activity-item:last-child{ border-bottom:none; }
+  .act-icon{
+    width:38px;height:38px;border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .act-icon svg{ width:17px;height:17px; }
+  .act-icon.like{ background:#FBEAE7; }
+  .act-icon.comment{ background:#EAF1FB; }
+  .act-icon.follow{ background:#EEF6EC; }
+  .act-icon.sale{ background:#FCF3DC; }
+  .activity-item .body{ flex:1; font-size:13.5px; }
+  .activity-item .body b{ font-weight:700; }
+  .activity-item .time{ font-size:11.5px; color:var(--muted); flex-shrink:0; }
+  .unread-dot{ width:8px;height:8px;border-radius:50%; background:var(--danger); flex-shrink:0; }
+
+  /* ---------------- settings ---------------- */
+  .settings-grid{ display:grid; grid-template-columns:1fr; gap:16px; }
+  @media(min-width:760px){ .settings-grid{ grid-template-columns:1fr 1fr; } }
+  .settings-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:22px;
+  }
+  .settings-card h3{ font-size:15px; margin:0 0 14px; }
+  .settings-card .field{ margin-bottom:12px; }
+  .settings-card label{ display:block; font-size:12px; font-weight:600; color:var(--ink-soft); margin-bottom:6px; }
+  .settings-card input{
+    width:100%; padding:10px 14px; border-radius:999px; border:1.5px solid var(--line);
+    font-family:inherit; font-size:13.5px; outline:none; background:#FCFAF6;
+  }
+  .settings-card input:focus{ border-color:var(--black); }
+  .toggle-row{ display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--line); }
+  .toggle-row:last-child{ border-bottom:none; }
+  .toggle-row .label{ font-size:13.5px; }
+  .toggle-row .desc{ font-size:11.5px; color:var(--muted); margin-top:2px; }
+  .switch{ position:relative; width:40px; height:23px; flex-shrink:0; }
+  .switch input{ opacity:0; width:0; height:0; }
+  .slider{
+    position:absolute; inset:0; background:#DCD5C2; border-radius:999px; cursor:pointer; transition:.2s;
+  }
+  .slider::before{
+    content:""; position:absolute; width:17px;height:17px; left:3px; top:3px; background:#fff; border-radius:50%; transition:.2s;
+    box-shadow:0 1px 3px rgba(0,0,0,0.3);
+  }
+  .switch input:checked + .slider{ background:var(--black); }
+  .switch input:checked + .slider::before{ transform:translateX(17px); }
+
+  /* ---------------- modal ---------------- */
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(20,18,15,0.5); backdrop-filter:blur(2px);
+    display:none; align-items:center; justify-content:center; z-index:100; padding:20px;
+  }
+  .modal-backdrop.open{ display:flex; }
+  .modal{
+    background:var(--panel); border-radius:22px; width:100%; max-width:460px;
+    max-height:90vh; overflow-y:auto; padding:28px;
+    box-shadow:0 30px 60px rgba(0,0,0,0.35);
+  }
+  .modal-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+  .modal-head h3{ margin:0; font-size:17px; }
+  .modal-head button{ background:none; border:none; font-size:18px; color:var(--muted); }
+  .modal .field{ margin-bottom:14px; }
+  .modal label{ display:block; font-size:12px; font-weight:600; color:var(--ink-soft); margin-bottom:6px; }
+  .modal input, .modal select, .modal textarea{
+    width:100%; padding:11px 15px; border-radius:14px; border:1.5px solid var(--line);
+    font-family:inherit; font-size:13.5px; outline:none; background:#FCFAF6; resize:vertical;
+  }
+  .modal input:focus, .modal select:focus, .modal textarea:focus{ border-color:var(--black); }
+  .upload-box{
+    border:1.5px dashed var(--line); border-radius:16px; padding:18px; text-align:center;
+    color:var(--muted); font-size:12.5px; cursor:pointer; position:relative; overflow:hidden;
+  }
+  .upload-box img{ max-height:130px; margin:0 auto 8px; border-radius:10px; }
+  .upload-box input[type=file]{ position:absolute; inset:0; opacity:0; cursor:pointer; }
+  .modal-actions{ display:flex; gap:10px; margin-top:20px; }
+  .modal-actions .pill-btn{ flex:1; justify-content:center; }
+
+  .toast{
+    position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--black); color:#fff; padding:12px 22px; border-radius:999px;
+    font-size:13px; font-weight:600; opacity:0; pointer-events:none; transition:.25s; z-index:200;
+    box-shadow:0 14px 30px rgba(0,0,0,0.3);
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  .tabline{ display:flex; gap:8px; margin-bottom:22px; flex-wrap:wrap; }
+  .tabline button{
+    padding:8px 16px; border-radius:999px; border:1.5px solid var(--line); background:var(--panel);
+    font-size:12.5px; font-weight:600; color:var(--ink-soft);
+  }
+  .tabline button.active{ background:var(--black); color:#fff; border-color:var(--black); }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP NAV ============ -->
+<div class="topnav">
+  <div class="topnav-inner">
+    <div class="brand">
+      <div class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2c-1 3-3.5 4.5-7 5 2.7 1.3 4 3 4.5 6C10 10 12.3 8 15.5 7.3 12.8 6.2 12.6 4.5 12 2z" fill="#FAF7F2"/></svg></div>
+      THE ARTZ
+    </div>
+    <div class="search-pill">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      Search artz, artists, styles…
+    </div>
+    <div class="topnav-right">
+      <button class="icon-btn" title="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg></button>
+      <img class="nav-avatar" src="https://picsum.photos/seed/avatar/100/100" alt="avatar">
+    </div>
+  </div>
+  <div class="subnav">
+    <a href="#header" class="active">Profile</a>
+    <a href="#showcase">Showcase</a>
+    <a href="#payment">Payment</a>
+    <a href="#favorites">Favorites</a>
+    <a href="#activity">Activity</a>
+    <a href="#settings">Settings</a>
+  </div>
+</div>
+
+<div class="shell">
+
+  <!-- ============ PROFILE HEADER ============ -->
+  <section id="header">
+    <div class="profile-header">
+      <div class="avatar-wrap">
+        <img src="https://picsum.photos/seed/avatar/200/200" alt="Profile avatar">
+        <div class="edit-dot"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></div>
+      </div>
+      <div class="profile-meta">
+        <h1>Maya Solano</h1>
+        <div class="handle">@mayasolano · Textile &amp; ink artist, Lisbon</div>
+        <p class="bio">I make hand-dyed textile pieces and ink studies inspired by coastlines. Open for commissions — DM for custom pieces.</p>
+        <div class="stat-row">
+          <div class="stat"><b>142</b><span>Artz</span></div>
+          <div class="stat"><b>8,204</b><span>Followers</span></div>
+          <div class="stat"><b>318</b><span>Following</span></div>
+          <div class="stat"><b>4.9★</b><span>Seller rating</span></div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="pill-btn ghost" onclick="showToast('Share link copied')">Share</button>
+        <button class="pill-btn" onclick="openProfileModal()">Edit profile</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ARTWORK SHOWCASE (CRUD) ============ -->
+  <section id="showcase">
+    <div class="section-head">
+      <div>
+        <h2>Artwork showcase</h2>
+        <p>Your uploaded artz. Click a piece to edit or remove it.</p>
+      </div>
+      <button class="pill-btn" onclick="openArtModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+        Add artz
+      </button>
+    </div>
+    <div class="masonry" id="artGrid"></div>
+  </section>
+
+  <!-- ============ PAYMENT SECTION ============ -->
+  <section id="payment">
+    <div class="section-head">
+      <div>
+        <h2>Payment methods</h2>
+        <p>How collectors pay you for sold artz.</p>
+      </div>
+    </div>
+    <div class="pay-row">
+      <div class="pay-card">
+        <div class="pay-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h7l9 9-7 7-9-9V4z" fill="#0E0D0B"/><circle cx="8.5" cy="8.5" r="1.5" fill="#FAF7F2"/></svg>
+        </div>
+        <div class="pay-body">
+          <div class="pay-title">UPI</div>
+          <div class="pay-sub">Instant transfers to your bank</div>
+          <input type="text" placeholder="yourname@upi" value="mayasolano@okhdfc">
+        </div>
+      </div>
+      <div class="pay-card">
+        <div class="pay-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0E0D0B" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM19 14h2v2h-2zM14 19h2v2h-2zM19 19h2v2h-2z"/></svg>
+        </div>
+        <div class="pay-body">
+          <div class="pay-title">QR Code</div>
+          <div class="pay-sub">Let buyers scan to pay in person</div>
+          <button class="pill-btn ghost small" style="margin-top:8px;" onclick="showToast('QR code generated')">Generate QR</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAVORITES & COLLECTIONS ============ -->
+  <section id="favorites">
+    <div class="section-head">
+      <div>
+        <h2>Favorites &amp; collections</h2>
+        <p>Artz you've saved, organized into boards.</p>
+      </div>
+      <button class="pill-btn ghost" onclick="showToast('New board created')">New board</button>
+    </div>
+    <div class="collections-grid" id="collectionsGrid"></div>
+  </section>
+
+  <!-- ============ ACTIVITY & NOTIFICATIONS ============ -->
+  <section id="activity">
+    <div class="section-head">
+      <div>
+        <h2>Activity &amp; notifications</h2>
+        <p>Likes, comments, follows and sales alerts.</p>
+      </div>
+    </div>
+    <div class="tabline">
+      <button class="active">All</button>
+      <button>Likes</button>
+      <button>Comments</button>
+      <button>Follows</button>
+      <button>Sales</button>
+    </div>
+    <div class="activity-list" id="activityList"></div>
+  </section>
+
+  <!-- ============ SETTINGS & SECURITY ============ -->
+  <section id="settings">
+    <div class="section-head">
+      <div>
+        <h2>Settings &amp; security</h2>
+        <p>Manage your account, password and privacy.</p>
+      </div>
+    </div>
+    <div class="settings-grid">
+      <div class="settings-card">
+        <h3>Account</h3>
+        <div class="field"><label>Display name</label><input type="text" value="Maya Solano"></div>
+        <div class="field"><label>Email</label><input type="email" value="maya@example.com"></div>
+        <div class="field"><label>Username</label><input type="text" value="mayasolano"></div>
+        <button class="pill-btn small" onclick="showToast('Account details saved')">Save changes</button>
+      </div>
+      <div class="settings-card">
+        <h3>Change password</h3>
+        <div class="field"><label>Current password</label><input type="password" placeholder="••••••••"></div>
+        <div class="field"><label>New password</label><input type="password" placeholder="••••••••"></div>
+        <div class="field"><label>Confirm new password</label><input type="password" placeholder="••••••••"></div>
+        <button class="pill-btn small" onclick="showToast('Password updated')">Update password</button>
+      </div>
+      <div class="settings-card" style="grid-column:1/-1;">
+        <h3>Privacy &amp; security</h3>
+        <div class="toggle-row">
+          <div><div class="label">Private profile</div><div class="desc">Only approved followers can see your artz</div></div>
+          <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="label">Show sales activity publicly</div><div class="desc">Display your recent sales on your profile</div></div>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="label">Two-factor authentication</div><div class="desc">Require a code at sign-in for extra security</div></div>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="label">Email me about new followers</div><div class="desc">Get notified when someone follows you</div></div>
+          <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============ ART DETAILS MODAL (Add/Edit) ============ -->
+<div class="modal-backdrop" id="artModalBackdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="artModalTitle">Add artz</h3>
+      <button onclick="closeArtModal()">✕</button>
+    </div>
+    <form onsubmit="saveArt(event)">
+      <div class="field">
+        <label>Image</label>
+        <label class="upload-box" id="uploadBox">
+          <span id="uploadHint">Click to upload an image</span>
+          <input type="file" accept="image/*" id="artImageInput" onchange="previewImage(event)">
+        </label>
+      </div>
+      <div class="field">
+        <label>Title</label>
+        <input type="text" id="artTitle" placeholder="e.g. Coastal Study No. 4" required>
+      </div>
+      <div class="field">
+        <label>Description</label>
+        <textarea id="artDesc" rows="3" placeholder="A short description of this piece…"></textarea>
+      </div>
+      <div class="field">
+        <label>Price (USD)</label>
+        <input type="number" id="artPrice" placeholder="120" min="0" required>
+      </div>
+      <div class="field">
+        <label>Category</label>
+        <select id="artCategory">
+          <option>Painting</option>
+          <option>Textile</option>
+          <option>Illustration</option>
+          <option>Photography</option>
+          <option>Sculpture</option>
+          <option>Digital</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="pill-btn ghost" onclick="closeArtModal()">Cancel</button>
+        <button type="submit" class="pill-btn" id="artSubmitBtn">Save artz</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ EDIT PROFILE MODAL ============ -->
+<div class="modal-backdrop" id="profileModalBackdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Edit profile</h3>
+      <button onclick="closeProfileModal()">✕</button>
+    </div>
+    <form onsubmit="saveProfile(event)">
+      <div class="field">
+        <label>Display name</label>
+        <input type="text" id="editDisplayName" placeholder="e.g. Maya Solano" required>
+      </div>
+      <div class="field">
+        <label>Username</label>
+        <input type="text" id="editUsername" placeholder="e.g. mayasolano" required>
+      </div>
+      <div class="field">
+        <label>Bio</label>
+        <textarea id="editBio" rows="4" placeholder="Tell us about yourself..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="pill-btn ghost" onclick="closeProfileModal()">Cancel</button>
+        <button type="submit" class="pill-btn">Save profile</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ---------------- config & gql ----------------
+  const API = 'http://localhost:4000/graphql';
+  const TOKEN_KEY = 'theartz_token';
+  const USER_KEY  = 'theartz_user';
+
+  let currentUser = null;
+  try { currentUser = JSON.parse(localStorage.getItem(USER_KEY)); } catch(e) {}
+  
+  if (!currentUser) {
+    window.location.href = 'login.html';
+  }
+
+  async function gql(query, variables = {}) {
+    const tok = localStorage.getItem(TOKEN_KEY);
+    const res = await fetch(API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(tok ? { Authorization: `Bearer ${tok}` } : {}),
+      },
+      body: JSON.stringify({ query, variables }),
+    });
+    if (!res.ok) throw new Error(`Network error: ${res.status}`);
+    const json = await res.json();
+    if (json.errors?.length) throw new Error(json.errors[0].message);
+    return json.data;
+  }
+
+  // ---------------- state ----------------
+  let artworks = [];
+  let collections = [];
+  let activity = [];
+  let editingId = null;
+  let pendingImage = null;
+
+  async function init() {
+    try {
+      await loadProfile();
+      await loadArtworks();
+      await loadCollections();
+      await loadActivity();
+    } catch(err) {
+      console.warn('Backend unavailable, using demo data', err);
+      useDemoData();
+    }
+    
+    // ---------------- subnav active state ----------------
+    const subnavLinks = document.querySelectorAll('.subnav a');
+    const sections = [...subnavLinks].map(l => document.querySelector(l.getAttribute('href')));
+    window.addEventListener('scroll', () => {
+      let current = sections[0];
+      sections.forEach(s => { if(s && window.scrollY >= s.offsetTop - 120) current = s; });
+      subnavLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current.id));
+    });
+
+    // close modals on backdrop click
+    document.getElementById('artModalBackdrop').addEventListener('click', (e) => {
+      if(e.target.id === 'artModalBackdrop') closeArtModal();
+    });
+    document.getElementById('profileModalBackdrop').addEventListener('click', (e) => {
+      if(e.target.id === 'profileModalBackdrop') closeProfileModal();
+    });
+  }
+
+  async function loadProfile() {
+    const data = await gql(`query { me { displayName username bio avatarUrl followerCount followingCount artzCount location } }`);
+    const me = data.me;
+    if(me) {
+      document.querySelector('.profile-meta h1').textContent = me.displayName || me.username;
+      document.querySelector('.profile-meta .handle').textContent = `@${me.username} · ${me.location || 'Location unknown'}`;
+      document.querySelector('.profile-meta .bio').textContent = me.bio || 'No bio yet.';
+      document.querySelector('.avatar-wrap img').src = me.avatarUrl || `https://picsum.photos/seed/${me.username}/200/200`;
+      
+      const stats = document.querySelectorAll('.stat-row .stat b');
+      if (stats.length >= 3) {
+        stats[0].textContent = me.artzCount || 0;
+        stats[1].textContent = me.followerCount || 0;
+        stats[2].textContent = me.followingCount || 0;
+      }
+      
+      // Update nav avatar
+      document.querySelector('.nav-avatar').src = me.avatarUrl || `https://picsum.photos/seed/${me.username}/100/100`;
+    }
+  }
+
+  async function loadArtworks() {
+    const data = await gql(`query { myArtz { id title description price currency category imageUrl status likeCount likedByMe } }`);
+    artworks = data.myArtz || [];
+    renderArt();
+  }
+
+  async function loadCollections() {
+    const data = await gql(`query { myCollections { id name artworks { imageUrl } } }`);
+    collections = (data.myCollections || []).map(c => ({
+      name: c.name,
+      count: c.artworks.length,
+      thumbs: [
+        c.artworks[0]?.imageUrl || 'https://picsum.photos/seed/c1/300/300',
+        c.artworks[1]?.imageUrl || 'https://picsum.photos/seed/c2/300/150',
+        c.artworks[2]?.imageUrl || 'https://picsum.photos/seed/c3/300/150'
+      ]
+    }));
+    renderCollections();
+  }
+
+  function timeAgo(iso) {
+    if (!iso) return '';
+    const sec = Math.floor((Date.now() - new Date(iso)) / 1000);
+    if (sec < 60)   return 'just now';
+    if (sec < 3600) return Math.floor(sec/60) + 'm ago';
+    if (sec < 86400) return Math.floor(sec/3600) + 'h ago';
+    return Math.floor(sec/86400) + 'd ago';
+  }
+
+  async function loadActivity() {
+    const data = await gql(`
+      query { myActivity(unreadOnly: false) {
+        id type read createdAt amountCents
+        actor { displayName username }
+        artwork { title }
+        commentText
+      }}
+    `);
+    activity = (data.myActivity || []).map(a => {
+      const name = a.actor?.displayName || a.actor?.username || 'Someone';
+      const art = a.artwork?.title || 'your artz';
+      let text = '';
+      if(a.type === 'like') text = `<b>${name}</b> liked your artz <b>${art}</b>`;
+      if(a.type === 'comment') text = `<b>${name}</b> commented: "${a.commentText || ''}"`;
+      if(a.type === 'follow') text = `<b>${name}</b> started following you`;
+      if(a.type === 'sale') text = `<b>${art}</b> sold for $${((a.amountCents||0)/100).toFixed(0)} to ${name}`;
+      
+      return { type: a.type, text, time: timeAgo(a.createdAt), unread: !a.read };
+    });
+    renderActivity();
+  }
+
+  // ---------------- render: artwork grid ----------------
+  function renderArt(){
+    const grid = document.getElementById('artGrid');
+    if(!artworks.length){
+      grid.innerHTML = '<div class="empty-state">No artz yet — click "Add artz" to upload your first piece.</div>';
+      return;
+    }
+    grid.innerHTML = artworks.map(a => `
+      <div class="art-card">
+        <span class="price-tag">$${Number(a.price).toFixed(0)}</span>
+        <img src="${a.imageUrl || a.img}" alt="${a.title}">
+        <div class="overlay">
+          <div class="overlay-top">
+            <button class="like ${a.likedByMe || a.liked ? 'active':''}" onclick="toggleLike('${a.id}', event)" title="Like">
+              <svg viewBox="0 0 24 24" fill="${a.likedByMe || a.liked?'#E0483A':'none'}" stroke="${a.likedByMe || a.liked?'#E0483A':'#333'}" stroke-width="2"><path d="M12 21s-7.5-4.9-10-9.6C.4 7.8 2.3 4 6 4c2.1 0 3.6 1.1 4.8 2.7C12 5.1 13.5 4 15.6 4c3.7 0 5.6 3.8 4 7.4C19.5 16.1 12 21 12 21z"/></svg>
+            </button>
+            <button onclick="openArtModal('${a.id}', event)" title="Edit">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+            </button>
+            <button onclick="deleteArt('${a.id}', event)" title="Delete">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#B3432B" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+            </button>
+          </div>
+          <div class="overlay-bottom">
+            <div class="t">${a.title}</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ---------------- render: collections ----------------
+  function renderCollections(){
+    const el = document.getElementById('collectionsGrid');
+    el.innerHTML = collections.map(c => `
+      <div class="collection-card" onclick="showToast('Opening board: ${c.name}')">
+        <div class="collection-thumbs">
+          <img src="${c.thumbs[0]}">
+          <img src="${c.thumbs[1]}">
+          <img src="${c.thumbs[2]}">
+        </div>
+        <div class="collection-meta"><b>${c.name}</b><span>${c.count} artz saved</span></div>
+      </div>
+    `).join('');
+  }
+
+  // ---------------- render: activity ----------------
+  const activityIcons = {
+    like: '<svg viewBox="0 0 24 24" fill="#E0483A" stroke="#E0483A" stroke-width="1.5"><path d="M12 21s-7.5-4.9-10-9.6C.4 7.8 2.3 4 6 4c2.1 0 3.6 1.1 4.8 2.7C12 5.1 13.5 4 15.6 4c3.7 0 5.6 3.8 4 7.4C19.5 16.1 12 21 12 21z"/></svg>',
+    comment: '<svg viewBox="0 0 24 24" fill="none" stroke="#2E63C9" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 01-9.8 8.3 8.6 8.6 0 01-2.6-.3L3 21l1.6-4.8A8.4 8.4 0 1121 11.5z"/></svg>',
+    follow: '<svg viewBox="0 0 24 24" fill="none" stroke="#2E7D4F" stroke-width="2"><circle cx="9" cy="8" r="4"/><path d="M2 21v-1a6 6 0 016-6h2a6 6 0 016 6v1"/><path d="M19 8v6M22 11h-6"/></svg>',
+    sale: '<svg viewBox="0 0 24 24" fill="none" stroke="#B38A0F" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5c0-1.4 1.2-2.5 2.5-2.5s2.5.9 2.5 2c0 3-5 1.5-5 4.5 0 1.1 1.2 2 2.5 2s2.5-1 2.5-2.3"/></svg>'
+  };
+  function renderActivity(){
+    const el = document.getElementById('activityList');
+    el.innerHTML = activity.map(a => `
+      <div class="activity-item">
+        <div class="act-icon ${a.type}">${activityIcons[a.type] || ''}</div>
+        <div class="body">${a.text}</div>
+        <div class="time">${a.time}</div>
+        ${a.unread ? '<div class="unread-dot"></div>' : ''}
+      </div>
+    `).join('');
+  }
+
+  // ---------------- like ----------------
+  async function toggleLike(id, e){
+    e.stopPropagation();
+    try {
+      const data = await gql(`mutation Like($id:ID!){toggleLike(artworkId:$id){id likeCount likedByMe}}`, { id });
+      const updated = data.toggleLike;
+      const a = artworks.find(x => x.id === id);
+      if(a) {
+        a.likedByMe = updated.likedByMe;
+        a.likeCount = updated.likeCount;
+        renderArt();
+      }
+    } catch(err) {
+      const a = artworks.find(x => x.id === id);
+      if(a) a.likedByMe = !a.likedByMe; // toggle back or demo mode
+      renderArt();
+    }
+  }
+
+  // ---------------- delete ----------------
+  async function deleteArt(id, e){
+    e.stopPropagation();
+    if(confirm('Remove this artz from your showcase?')){
+      try {
+        await gql(`mutation Del($id:ID!){deleteArtz(id:$id)}`, { id });
+        artworks = artworks.filter(x => x.id !== id);
+        renderArt();
+        showToast('Artz deleted');
+      } catch(err) {
+        // demo fallback
+        artworks = artworks.filter(x => x.id !== id);
+        renderArt();
+        showToast('Artz deleted (demo)');
+      }
+    }
+  }
+
+  // ---------------- add / edit modal ----------------
+  function openArtModal(id, e){
+    if(e) e.stopPropagation();
+    editingId = id || null;
+    pendingImage = null;
+    const backdrop = document.getElementById('artModalBackdrop');
+    const title = document.getElementById('artModalTitle');
+    const submitBtn = document.getElementById('artSubmitBtn');
+    const uploadHint = document.getElementById('uploadHint');
+    const uploadBox = document.getElementById('uploadBox');
+
+    // reset preview image if any
+    const existingImg = uploadBox.querySelector('img');
+    if(existingImg) existingImg.remove();
+
+    if(id){
+      const a = artworks.find(x => x.id === id);
+      if(!a) return;
+      title.textContent = 'Edit artz';
+      submitBtn.textContent = 'Save changes';
+      document.getElementById('artTitle').value = a.title;
+      document.getElementById('artDesc').value = a.description || a.desc || '';
+      document.getElementById('artPrice').value = a.price;
+      document.getElementById('artCategory').value = a.category;
+      pendingImage = a.imageUrl || a.img;
+      const img = document.createElement('img');
+      img.src = pendingImage;
+      uploadBox.prepend(img);
+      uploadHint.textContent = 'Click to replace image';
+    } else {
+      title.textContent = 'Add artz';
+      submitBtn.textContent = 'Save artz';
+      document.getElementById('artTitle').value = '';
+      document.getElementById('artDesc').value = '';
+      document.getElementById('artPrice').value = '';
+      document.getElementById('artCategory').value = 'Painting';
+      uploadHint.textContent = 'Click to upload an image';
+    }
+    backdrop.classList.add('open');
+  }
+  function closeArtModal(){
+    document.getElementById('artModalBackdrop').classList.remove('open');
+  }
+  function previewImage(e){
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev){
+      pendingImage = ev.target.result;
+      const uploadBox = document.getElementById('uploadBox');
+      const existingImg = uploadBox.querySelector('img');
+      if(existingImg) existingImg.remove();
+      const img = document.createElement('img');
+      img.src = pendingImage;
+      uploadBox.prepend(img);
+      document.getElementById('uploadHint').textContent = 'Click to replace image';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function saveArt(e){
+    e.preventDefault();
+    const title = document.getElementById('artTitle').value.trim();
+    const desc = document.getElementById('artDesc').value.trim();
+    const price = Number(document.getElementById('artPrice').value) || 0;
+    const category = document.getElementById('artCategory').value;
+    const img = pendingImage || `https://picsum.photos/seed/new${Date.now()}/400/460`;
+
+    try {
+      if(editingId){
+        await gql(`mutation Up($id:ID!,$in:UpdateArtworkInput!){updateArtz(id:$id,input:$in){id}}`, {
+          id: editingId,
+          in: { title, description:desc, price, category, imageUrl:img }
+        });
+        showToast('Artz updated');
+      } else {
+        await gql(`mutation Cr($in:CreateArtworkInput!){createArtz(input:$in){id}}`, {
+          in: { title, description:desc, price, category, imageUrl:img, generateDescription: true }
+        });
+        showToast('Artz added to your showcase');
+      }
+      await loadArtworks();
+      closeArtModal();
+    } catch(err) {
+      if(editingId){
+        const a = artworks.find(x => x.id === editingId);
+        Object.assign(a, { title, desc, description:desc, price, category, img, imageUrl:img });
+        showToast('Artz updated (demo)');
+      } else {
+        artworks.unshift({ id: String(Date.now()), title, desc, description:desc, price, category, img, imageUrl:img, likedByMe:false });
+        showToast('Artz added to your showcase (demo)');
+      }
+      renderArt();
+      closeArtModal();
+    }
+  }
+
+  // ---------------- toast ----------------
+  let toastTimer;
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  // ---------------- edit profile modal ----------------
+  function openProfileModal(){
+    const nameEl = document.querySelector('.profile-meta h1');
+    const handleEl = document.querySelector('.profile-meta .handle');
+    const bioEl = document.querySelector('.profile-meta .bio');
+    
+    document.getElementById('editDisplayName').value = nameEl.textContent;
+    // Extract username without the @ and · location
+    const handleText = handleEl.textContent;
+    const usernameMatch = handleText.match(/@([\w\.\-]+)/);
+    document.getElementById('editUsername').value = usernameMatch ? usernameMatch[1] : '';
+    document.getElementById('editBio').value = bioEl.textContent === 'No bio yet.' ? '' : bioEl.textContent;
+    
+    document.getElementById('profileModalBackdrop').classList.add('open');
+  }
+  
+  function closeProfileModal(){
+    document.getElementById('profileModalBackdrop').classList.remove('open');
+  }
+
+  async function saveProfile(e){
+    e.preventDefault();
+    const displayName = document.getElementById('editDisplayName').value.trim();
+    const username = document.getElementById('editUsername').value.trim();
+    const bio = document.getElementById('editBio').value.trim();
+
+    try {
+      await gql(`mutation UpdateProf($in:UpdateProfileInput!){updateProfile(input:$in){id}}`, {
+        in: { displayName, username, bio }
+      });
+      showToast('Profile updated successfully');
+      await loadProfile();
+      closeProfileModal();
+    } catch(err) {
+      // demo fallback
+      document.querySelector('.profile-meta h1').textContent = displayName;
+      document.querySelector('.profile-meta .handle').textContent = `@${username} · Location unknown`;
+      document.querySelector('.profile-meta .bio').textContent = bio || 'No bio yet.';
+      showToast('Profile updated (demo)');
+      closeProfileModal();
+    }
+  }
+
+  // ---------------- useDemoData ----------------
+  function useDemoData() {
+    artworks = [
+      { id:'d1', title:"Coastal Fragment I", desc:"Hand-dyed indigo textile study.", price:180, category:"Textile", img:"https://picsum.photos/seed/a1/400/560", likedByMe:true },
+      { id:'d2', title:"Low Tide", desc:"Ink on cotton rag paper.", price:95, category:"Painting", img:"https://picsum.photos/seed/a2/400/320", likedByMe:false },
+      { id:'d3', title:"Salt Line", desc:"Mixed media coastal series.", price:210, category:"Painting", img:"https://picsum.photos/seed/a3/400/480", likedByMe:false },
+      { id:'d4', title:"Weft & Weather", desc:"Woven textile wall piece.", price:340, category:"Textile", img:"https://picsum.photos/seed/a4/400/300", likedByMe:true }
+    ];
+    collections = [
+      { name:"Coastal palette", count:24, thumbs:["https://picsum.photos/seed/a1/300/300","https://picsum.photos/seed/a3/300/150","https://picsum.photos/seed/a5/300/150"] },
+      { name:"Textile inspo", count:12, thumbs:["https://picsum.photos/seed/a4/300/300","https://picsum.photos/seed/a6/300/150","https://picsum.photos/seed/a2/300/150"] }
+    ];
+    activity = [
+      { type:"sale", text:"<b>Weft & Weather</b> sold for $340 to @collector_j", time:"2h ago", unread:true },
+      { type:"like", text:"<b>Priya N.</b> liked your artz <b>Salt Line</b>", time:"4h ago", unread:true }
+    ];
+    renderArt();
+    renderCollections();
+    renderActivity();
+  }
+
+  // ---------------- init ----------------
+  init();
+</script>
+</body>
+</html>
