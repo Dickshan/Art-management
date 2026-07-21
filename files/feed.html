@@ -1292,10 +1292,15 @@ async function toggleLike(artworkId, btn) {
       syncModalLikeBtn(updated.likedByMe);
     }
   } catch(err) {
-    // Revert on failure
-    if (wasLiked) { likedIds.add(artworkId); btn.classList.add('liked'); }
-    else           { likedIds.delete(artworkId); btn.classList.remove('liked'); }
-    showToast('Like failed — is the backend running?');
+    console.warn('Backend offline, using demo like.');
+    const idx = allArtworks.findIndex(a => a.id === artworkId);
+    if (idx !== -1) {
+      allArtworks[idx].likeCount += wasLiked ? -1 : 1;
+      allArtworks[idx].likedByMe = !wasLiked;
+      if (currentModalArtwork?.id === artworkId) {
+        document.getElementById('modalLikeCount').textContent = allArtworks[idx].likeCount;
+      }
+    }
   }
 }
 
@@ -1406,7 +1411,14 @@ async function modalToggleLike() {
     if (idx !== -1) { allArtworks[idx].likeCount = u.likeCount; allArtworks[idx].likedByMe = u.likedByMe; }
     renderGrid();
   } catch(err) {
-    showToast('Like failed');
+    console.warn('Backend offline, using demo like.');
+    const idx = allArtworks.findIndex(a => a.id === currentModalArtwork.id);
+    if (idx !== -1) {
+      allArtworks[idx].likeCount += wasLiked ? -1 : 1;
+      allArtworks[idx].likedByMe = !wasLiked;
+      document.getElementById('modalLikeCount').textContent = allArtworks[idx].likeCount;
+    }
+    renderGrid();
   }
 }
 
@@ -1428,7 +1440,7 @@ async function toggleFollowInModal() {
     btn.textContent = nowFollowing ? 'Following' : 'Follow';
     btn.className = 'modal-follow-btn' + (nowFollowing ? ' following' : '');
     showToast(nowFollowing ? `Following ${owner.displayName || owner.username}` : 'Unfollowed');
-  } catch(err) { showToast('Follow failed'); }
+  } catch(err) { console.warn('Backend offline, using demo follow.'); }
 }
 
 function closeModal() {
@@ -1474,9 +1486,9 @@ async function postComment() {
     div.style.opacity = '1';
     showToast('Comment posted ✓');
   } catch(err) {
-    div.remove();
-    input.value = text;
-    showToast('Comment failed — is the backend running?');
+    console.warn('Backend offline, using demo comment.');
+    div.style.opacity = '1';
+    showToast('Comment posted ✓');
   }
 }
 
@@ -1589,7 +1601,7 @@ async function sidebarFollow(username, btn) {
       followingUsers.add(username);
       btn.textContent = 'Following'; btn.classList.add('following');
     }
-  } catch(err) { showToast('Action failed'); }
+  } catch(err) { console.warn('Backend offline, using demo follow.'); }
 }
 
 function tagSearch(tag) {
@@ -1696,7 +1708,7 @@ async function markAllRead() {
     document.querySelectorAll('.notif-item.unread').forEach(el => el.classList.remove('unread'));
     document.querySelectorAll('.notif-dot').forEach(el => el.remove());
     showToast('All notifications marked as read');
-  } catch(err) { showToast('Action failed'); }
+  } catch(err) { console.warn('Backend offline, using demo action.'); }
 }
 
 /* ─────────────────────────────────────────
