@@ -4,314 +4,313 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>THE ARTZ — Sign in</title>
+<meta name="description" content="Sign in to THE ARTZ to discover, collect and explore art from thousands of artists." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg: #FAF7F2;
-    --panel: #FFFFFF;
-    --ink: #14120F;
-    --ink-soft: #55503F;
-    --muted: #9A927D;
-    --line: #E7E1D4;
-    --black: #0E0D0B;
+  :root {
+    --bg:           #FAF7F2;
+    --panel:        #FFFFFF;
+    --ink:          #14120F;
+    --ink-soft:     #55503F;
+    --muted:        #9A927D;
+    --line:         #E7E1D4;
+    --black:        #0E0D0B;
     --accent-shadow: rgba(20,18,15,0.10);
   }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    font-family:'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-    background:var(--bg);
-    color:var(--ink);
-    min-height:100vh;
-  }
-  .wrap{
-    display:grid;
-    grid-template-columns: 1fr;
-    min-height:100vh;
-  }
-  @media(min-width:960px){
-    .wrap{ grid-template-columns: 1.05fr 1fr; }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
   }
 
-  /* ---------- Left: masonry showcase ---------- */
-  .showcase{
-    display:none;
-    position:relative;
-    background: linear-gradient(180deg, #F3EEE3 0%, #EDE6D6 100%);
-    padding:28px;
-    overflow:hidden;
+  /* ── Card ── */
+  .card {
+    background: var(--panel);
+    border-radius: 24px;
+    padding: 44px 40px 40px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 4px 40px rgba(20,18,15,0.08);
   }
-  @media(min-width:960px){ .showcase{ display:block; } }
-  .showcase-inner{
-    columns: 3;
-    column-gap: 14px;
-    height: 100%;
-    animation: floatUp 40s linear infinite;
+
+  /* ── Logo ── */
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 28px;
   }
-  .showcase img{
-    width:100%;
-    display:block;
-    break-inside:avoid;
-    margin-bottom:14px;
-    border-radius:16px;
-    box-shadow: 0 8px 24px var(--accent-shadow);
-  }
-  @keyframes floatUp{
-    0%{ transform:translateY(0); }
-    100%{ transform:translateY(-8%); }
-  }
-  .showcase-badge{
-    position:absolute; left:28px; bottom:28px; z-index:5;
+  .logo .mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
     background: var(--black);
-    color:#fff;
-    padding:12px 18px;
-    border-radius:999px;
-    font-size:13px;
-    letter-spacing:0.02em;
-    display:flex; align-items:center; gap:8px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
-  .showcase::after{
-    content:"";
-    position:absolute; inset:0;
-    background: linear-gradient(180deg, rgba(243,238,227,0) 60%, #EDE6D6 100%);
+  .logo .mark svg { width: 20px; height: 20px; }
+  .logo .word {
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .logo .word .dot { color: var(--muted); font-weight: 600; }
+
+  /* ── Heading ── */
+  h1.title {
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  p.subtitle {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 0 0 28px;
   }
 
-  /* ---------- Right: form ---------- */
-  .formside{
-    display:flex; align-items:center; justify-content:center;
-    padding: 40px 24px;
-  }
-  .card{
-    width:100%;
-    max-width: 400px;
-  }
-  .logo{
-    display:flex; align-items:center; justify-content:center;
-    gap:10px;
-    margin-bottom: 36px;
-  }
-  .logo .mark{
-    width:38px;height:38px;border-radius:11px;
-    background:var(--black);
-    display:flex;align-items:center;justify-content:center;
-  }
-  .logo .mark svg{ width:20px;height:20px; }
-  .logo .word{
-    font-weight:800;
-    font-size:22px;
-    letter-spacing:-0.02em;
-  }
-  .logo .word .dot{ color:var(--muted); font-weight:600; }
+  /* ── Form fields ── */
+  form { display: flex; flex-direction: column; gap: 14px; }
 
-  h1.title{
-    font-size:24px;
-    font-weight:700;
-    text-align:center;
-    margin:0 0 6px;
-    letter-spacing:-0.01em;
+  .field-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+    display: block;
+    padding-left: 2px;
   }
-  p.subtitle{
-    text-align:center;
-    color:var(--ink-soft);
-    font-size:14px;
-    margin:0 0 32px;
+  .field input {
+    width: 100%;
+    padding: 13px 18px;
+    border-radius: 999px;
+    border: 1.5px solid var(--line);
+    background: var(--panel);
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    transition: box-shadow .18s ease, border-color .18s ease;
   }
-
-  form{ display:flex; flex-direction:column; gap:14px; }
-  label{
-    font-size:12px;
-    font-weight:600;
-    color:var(--ink-soft);
-    margin-bottom:6px;
-    display:block;
-    padding-left:4px;
-  }
-  .field input{
-    width:100%;
-    padding:13px 18px;
-    border-radius:999px;
-    border:1.5px solid var(--line);
-    background:var(--panel);
-    font-family:inherit;
-    font-size:14px;
-    color:var(--ink);
-    outline:none;
-    transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease;
-  }
-  .field input::placeholder{ color:#B8B09A; }
-  .field input:hover{ box-shadow: 0 4px 16px var(--accent-shadow); }
-  .field input:focus{
+  .field input::placeholder { color: #C0B8A8; }
+  .field input:hover { box-shadow: 0 4px 16px var(--accent-shadow); }
+  .field input:focus {
     border-color: var(--black);
     box-shadow: 0 6px 20px var(--accent-shadow);
   }
 
-  .row-between{
-    display:flex; align-items:center; justify-content:space-between;
-    font-size:13px;
-    margin: 2px 4px 4px;
+  /* ── Remember me / Forgot password row ── */
+  .row-check {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    margin: 2px 2px 4px;
+    gap: 0;
   }
-  .remember{ display:flex; align-items:center; gap:8px; color:var(--ink-soft); }
-  .remember input{
-    width:16px;height:16px;
+  .remember {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    user-select: none;
+  }
+  .remember input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
     accent-color: var(--black);
-    cursor:pointer;
+    cursor: pointer;
+    flex-shrink: 0;
+    border-radius: 4px;
   }
-  a.link{
-    color:var(--ink);
-    font-weight:600;
-    text-decoration:none;
-    border-bottom:1px solid var(--line);
-  }
-  a.link:hover{ border-color: var(--ink); }
+  .remember-text { color: var(--ink-soft); }
 
-  button.btn-primary{
-    margin-top: 6px;
-    width:100%;
-    padding:14px 18px;
-    border-radius:999px;
-    border:none;
-    background:var(--black);
-    color:#fff;
-    font-family:inherit;
-    font-weight:700;
-    font-size:14.5px;
-    letter-spacing:0.01em;
-    cursor:pointer;
-    transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
-    box-shadow: 0 8px 20px rgba(14,13,11,0.18);
+  a.link-forgot {
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
+    margin-left: 0;
   }
-  button.btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 12px 28px rgba(14,13,11,0.26); }
-  button.btn-primary:active{ transform: translateY(0); }
+  a.link-forgot:hover { text-decoration: underline; }
 
-  .divider{
-    display:flex; align-items:center; gap:12px;
-    margin:26px 0 18px;
-    color:var(--muted);
-    font-size:12px;
+  /* ── Sign in button ── */
+  button.btn-primary {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 999px;
+    border: none;
+    background: var(--black);
+    color: #fff;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+    box-shadow: 0 8px 20px rgba(14,13,11,0.20);
+    margin-top: 4px;
   }
-  .divider::before, .divider::after{
-    content:""; flex:1; height:1px; background:var(--line);
+  button.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(14,13,11,0.28);
+  }
+  button.btn-primary:active { transform: translateY(0); }
+
+  /* ── "or continue with" ── */
+  .or-text {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12.5px;
+    margin: 22px 0 16px;
   }
 
-  .social-row{
-    display:flex;
-    gap:12px;
+  /* ── Social buttons ── */
+  .social-row {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
   }
-  .social-btn{
-    flex:1;
-    display:flex; align-items:center; justify-content:center;
-    padding:12px 0;
-    border-radius:999px;
-    border:1.5px solid var(--line);
-    background:var(--panel);
-    cursor:pointer;
+  .social-btn {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1.5px solid var(--line);
+    background: var(--panel);
+    cursor: pointer;
     transition: box-shadow .18s ease, transform .15s ease, border-color .18s ease;
   }
-  .social-btn:hover{
+  .social-btn:hover {
     box-shadow: 0 6px 18px var(--accent-shadow);
     transform: translateY(-1px);
-    border-color:#D9D1BC;
+    border-color: #D0C9B8;
   }
-  .social-btn svg{ width:20px; height:20px; }
+  .social-btn svg { width: 20px; height: 20px; }
 
-  .signup-note{
-    text-align:center;
-    margin-top:28px;
-    font-size:13.5px;
-    color:var(--ink-soft);
+  /* ── Sign up note ── */
+  .signup-note {
+    text-align: center;
+    margin-top: 26px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
   }
+  .signup-note a {
+    color: var(--ink);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .signup-note a:hover { text-decoration: underline; }
 
-  ::selection{ background: var(--ink); color:#fff; }
+  ::selection { background: var(--ink); color: #fff; }
 </style>
 </head>
 <body>
 
-<div class="wrap">
-  <!-- LEFT: masonry showcase -->
-  <div class="showcase">
-    <div class="showcase-inner">
-      <img src="https://picsum.photos/seed/artz1/400/520" alt="">
-      <img src="https://picsum.photos/seed/artz2/400/320" alt="">
-      <img src="https://picsum.photos/seed/artz3/400/460" alt="">
-      <img src="https://picsum.photos/seed/artz4/400/300" alt="">
-      <img src="https://picsum.photos/seed/artz5/400/560" alt="">
-      <img src="https://picsum.photos/seed/artz6/400/380" alt="">
-      <img src="https://picsum.photos/seed/artz7/400/300" alt="">
-      <img src="https://picsum.photos/seed/artz8/400/440" alt="">
-      <img src="https://picsum.photos/seed/artz9/400/520" alt="">
+<div class="card">
+
+  <!-- Logo -->
+  <div class="logo">
+    <div class="mark">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 2c-1 3-3.5 4.5-7 5 2.7 1.3 4 3 4.5 6C10 10 12.3 8 15.5 7.3 12.8 6.2 12.6 4.5 12 2z" fill="#FAF7F2"/>
+        <circle cx="17" cy="16" r="2.4" fill="#FAF7F2"/>
+      </svg>
     </div>
-    <div class="showcase-badge">
-      <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M12 21s-7.5-4.9-10-9.6C.4 7.8 2.3 4 6 4c2.1 0 3.6 1.1 4.8 2.7C12 5.1 13.5 4 15.6 4c3.7 0 5.6 3.8 4 7.4C19.5 16.1 12 21 12 21z" fill="white"/></svg>
-      Discover artz from 24,000+ artists
-    </div>
+    <div class="word">THE ARTZ<span class="dot">.</span></div>
   </div>
 
-  <!-- RIGHT: form -->
-  <div class="formside">
-    <div class="card">
-      <div class="logo">
-        <div class="mark">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2c-1 3-3.5 4.5-7 5 2.7 1.3 4 3 4.5 6C10 10 12.3 8 15.5 7.3 12.8 6.2 12.6 4.5 12 2z" fill="#FAF7F2"/><circle cx="17" cy="16" r="2.4" fill="#FAF7F2"/></svg>
-        </div>
-        <div class="word">THE ARTZ<span class="dot">.</span></div>
-      </div>
+  <!-- Heading -->
+  <h1 class="title">Welcome</h1>
+  <p class="subtitle">Sign in to discover artz</p>
 
-      <h1 class="title">Welcome back</h1>
-      <p class="subtitle">Sign in to discover, collect and sell artz</p>
-
-      <form onsubmit="handleLogin(event)">
-        <div class="field">
-          <label for="identifier">Email or username</label>
-          <input id="identifier" type="text" placeholder="you@example.com" required />
-        </div>
-        <div class="field">
-          <label for="password">Password</label>
-          <input id="password" type="password" placeholder="••••••••" required />
-        </div>
-
-        <div class="row-between">
-          <label class="remember" style="margin:0;">
-            <input type="checkbox" id="remember" />
-            Remember me
-          </label>
-          <a href="#" class="link">Forgot password?</a>
-        </div>
-
-        <button type="submit" class="btn-primary">Sign in</button>
-      </form>
-
-      <div class="divider">or continue with</div>
-
-      <div class="social-row">
-        <button class="social-btn" aria-label="Continue with Google" onclick="socialLogin('Google')">
-          <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.9 18.9 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6 29.6 4 24 4c-7.5 0-14 4.2-17.7 10.7z"/><path fill="#4CAF50" d="M24 44c5.5 0 10.4-1.9 14.3-5.1l-6.6-5.6c-2.1 1.5-4.8 2.4-7.7 2.4-5.2 0-9.6-3.3-11.2-7.9l-6.5 5C9.9 39.7 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.2 4.2-4 5.6l6.6 5.6C41.9 36 44 30.6 44 24c0-1.3-.1-2.7-.4-3.5z"/></svg>
-        </button>
-        <button class="social-btn" aria-label="Continue with Facebook" onclick="socialLogin('Facebook')">
-          <svg viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.49h-2.79V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
-        </button>
-        <button class="social-btn" aria-label="Continue with Apple" onclick="socialLogin('Apple')">
-          <svg viewBox="0 0 24 24"><path fill="#0E0D0B" d="M16.365 1.43c0 1.14-.475 2.163-1.245 2.973-.85.898-2.24 1.6-3.375 1.51-.135-1.1.42-2.24 1.19-3.02.85-.878 2.36-1.53 3.43-1.463zM20.6 17.34c-.61 1.41-.9 2.04-1.68 3.28-1.09 1.73-2.63 3.88-4.54 3.9-1.7.02-2.14-1.11-4.44-1.1-2.3.01-2.78 1.12-4.48 1.1-1.91-.02-3.36-1.96-4.45-3.69-3.05-4.86-3.37-10.57-1.49-13.61 1.34-2.16 3.45-3.42 5.43-3.42 2.02 0 3.29 1.13 4.96 1.13 1.62 0 2.6-1.13 4.94-1.13 1.76 0 3.63.96 4.96 2.62-4.36 2.39-3.65 8.62.81 10.92z"/></svg>
-        </button>
-      </div>
-
-      <p class="signup-note">New to THE ARTZ? <a href="#" class="link">Create an account</a></p>
+  <!-- Form -->
+  <form onsubmit="handleLogin(event)">
+    <div class="field">
+      <label class="field-label" for="identifier">Email or username</label>
+      <input id="identifier" type="text" placeholder="you@example.com" required />
     </div>
+
+    <div class="field">
+      <label class="field-label" for="password">Password</label>
+      <input id="password" type="password" placeholder="••••••••" required />
+    </div>
+
+    <div class="row-check">
+      <label class="remember">
+        <input type="checkbox" id="remember" />
+        <span class="remember-text">Remember me</span>
+      </label>
+      <a href="#" class="link-forgot">Forgot password?</a>
+    </div>
+
+    <button type="submit" class="btn-primary">Sign in</button>
+  </form>
+
+  <!-- Social login -->
+  <p class="or-text">or continue with</p>
+
+  <div class="social-row">
+    <!-- Google -->
+    <button class="social-btn" aria-label="Continue with Google" onclick="socialLogin('Google')">
+      <svg viewBox="0 0 48 48">
+        <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/>
+        <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.9 18.9 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6 29.6 4 24 4c-7.5 0-14 4.2-17.7 10.7z"/>
+        <path fill="#4CAF50" d="M24 44c5.5 0 10.4-1.9 14.3-5.1l-6.6-5.6c-2.1 1.5-4.8 2.4-7.7 2.4-5.2 0-9.6-3.3-11.2-7.9l-6.5 5C9.9 39.7 16.4 44 24 44z"/>
+        <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.2 4.2-4 5.6l6.6 5.6C41.9 36 44 30.6 44 24c0-1.3-.1-2.7-.4-3.5z"/>
+      </svg>
+    </button>
+
+    <!-- Facebook -->
+    <button class="social-btn" aria-label="Continue with Facebook" onclick="socialLogin('Facebook')">
+      <svg viewBox="0 0 24 24">
+        <path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.49h-2.79V24C19.61 23.1 24 18.1 24 12.07z"/>
+      </svg>
+    </button>
+
+    <!-- Apple -->
+    <button class="social-btn" aria-label="Continue with Apple" onclick="socialLogin('Apple')">
+      <svg viewBox="0 0 24 24">
+        <path fill="#0E0D0B" d="M16.365 1.43c0 1.14-.475 2.163-1.245 2.973-.85.898-2.24 1.6-3.375 1.51-.135-1.1.42-2.24 1.19-3.02.85-.878 2.36-1.53 3.43-1.463zM20.6 17.34c-.61 1.41-.9 2.04-1.68 3.28-1.09 1.73-2.63 3.88-4.54 3.9-1.7.02-2.14-1.11-4.44-1.1-2.3.01-2.78 1.12-4.48 1.1-1.91-.02-3.36-1.96-4.45-3.69-3.05-4.86-3.37-10.57-1.49-13.61 1.34-2.16 3.45-3.42 5.43-3.42 2.02 0 3.29 1.13 4.96 1.13 1.62 0 2.6-1.13 4.94-1.13 1.76 0 3.63.96 4.96 2.62-4.36 2.39-3.65 8.62.81 10.92z"/>
+      </svg>
+    </button>
   </div>
+
+  <!-- Sign up note -->
+  <p class="signup-note">New to THE ARTZ? <a href="#">Create an account</a></p>
+
 </div>
 
 <script>
-  const API = 'http://localhost:4000/graphql';
+  const API      = 'http://localhost:4000/graphql';
   const TOKEN_KEY = 'theartz_token';
   const USER_KEY  = 'theartz_user';
 
-  async function handleLogin(e){
+  async function handleLogin(e) {
     e.preventDefault();
     const identifier = document.getElementById('identifier').value;
-    const password = document.getElementById('password').value;
-    
+    const password   = document.getElementById('password').value;
+
     try {
       const res = await fetch(API, {
         method: 'POST',
@@ -329,20 +328,24 @@
       if (!res.ok) throw new Error('Network error');
       const json = await res.json();
       if (json.errors) throw new Error(json.errors[0].message);
-      
+
       const { token, user } = json.data.login;
       localStorage.setItem(TOKEN_KEY, token);
       localStorage.setItem(USER_KEY, JSON.stringify(user));
       window.location.href = 'feed.html';
-    } catch(err) {
-      console.warn('Login failed or backend offline, doing demo login.', err);
+    } catch (err) {
+      console.warn('Login failed or backend offline — doing demo login.', err);
       localStorage.setItem(USER_KEY, JSON.stringify({
-        id: 'u1', username: identifier, displayName: identifier, avatarUrl: 'https://picsum.photos/seed/avatar/100/100'
+        id: 'u1',
+        username: identifier,
+        displayName: identifier,
+        avatarUrl: 'https://picsum.photos/seed/avatar/100/100'
       }));
       window.location.href = 'feed.html';
     }
   }
-  function socialLogin(provider){
+
+  function socialLogin(provider) {
     alert('Demo only — would start OAuth flow with ' + provider + '.');
   }
 </script>
